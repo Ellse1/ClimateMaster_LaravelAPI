@@ -20,5 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register', 'Auth\AuthController@register');
 Route::post('/login', 'Auth\AuthController@login');
 Route::get('/user', 'Auth\AuthController@user');//Gets the signed in User
-
 Route::post('/logout', 'Auth\AuthController@logout');
+
+Route::post('handlungsvorschlagHinzufuegen', 'HandlungsvorschlagController@store');

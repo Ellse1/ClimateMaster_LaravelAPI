@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::fallback(function () {
+    return response()->json([
+        'status' => 'error',
+        'message' => 'no route found'
+    ]);
+    // redirect()->away('http://localhost:3000/');
 });
