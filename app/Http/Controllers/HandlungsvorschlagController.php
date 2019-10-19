@@ -41,7 +41,7 @@ class HandlungsvorschlagController extends Controller
 
         $imageName = $request->titel . "." .$request->vorschlagIcon->getClientOriginalExtension();
         
-        request()->vorschlagIcon->move(public_path('images'), $imageName);
+        $imagePath = request()->vorschlagIcon->move(public_path('images/vorschlaegeIcons'), $imageName);
 
         $handlungsvorschlag = Handlungsvorschlag::create([
             'titel' => $request->titel,

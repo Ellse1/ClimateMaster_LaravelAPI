@@ -1,5 +1,7 @@
 <?php
 
+use App\Handlungsvorschlag;
+use App\Http\Resources\HandlungsvorschlagResource;
 use Illuminate\Http\Request;
 
 /*
@@ -23,3 +25,9 @@ Route::get('/user', 'Auth\AuthController@user');//Gets the signed in User
 Route::post('/logout', 'Auth\AuthController@logout');
 
 Route::post('handlungsvorschlagHinzufuegen', 'HandlungsvorschlagController@store');
+Route::get('handlungsvorschlag/{ID}', function($id){
+    return new HandlungsvorschlagResource(handlungsvorschlag::find($id));
+});
+Route::get('handlungsvorschlag', function(){
+    return HandlungsvorschlagResource::collection(handlungsvorschlag::all());
+});

@@ -17,7 +17,8 @@ class HandlungsvorschlagResource extends JsonResource
         return [
             'id' => $this->id,
             'titel' => $this->titel,
-            'kurzbeschreibung' => $this->kurzbeschreibung
+            'kurzbeschreibung' => $this->kurzbeschreibung,
+            'iconName' => $this->iconName
         ];
     }
 }
