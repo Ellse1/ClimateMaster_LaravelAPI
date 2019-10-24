@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHandlungsvorschlagsTable extends Migration
+class CreateClimadvicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateHandlungsvorschlagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('handlungsvorschlag', function (Blueprint $table) {
+        Schema::create('climadvices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('titel');
-            $table->string('kurzbeschreibung');
-            $table->mediumText('detailbeschreibung');
+            $table->string('title');
+            $table->string('shortDescription');
+            $table->mediumText('detailedDescription');
             $table->string('iconName');
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ class CreateHandlungsvorschlagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('handlungsvorschlag');
+        Schema::dropIfExists('climadvices');
     }
 }

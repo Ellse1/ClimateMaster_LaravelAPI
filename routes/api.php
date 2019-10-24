@@ -24,10 +24,15 @@ Route::post('/login', 'Auth\AuthController@login');
 Route::get('/user', 'Auth\AuthController@user');//Gets the signed in User
 Route::post('/logout', 'Auth\AuthController@logout');
 
-Route::post('handlungsvorschlagHinzufuegen', 'HandlungsvorschlagController@store');
-Route::get('handlungsvorschlag/{ID}', function($id){
-    return new HandlungsvorschlagResource(handlungsvorschlag::find($id));
-});
-Route::get('handlungsvorschlag', function(){
-    return HandlungsvorschlagResource::collection(handlungsvorschlag::all());
-});
+// Route::post('handlungsvorschlagHinzufuegen', 'HandlungsvorschlagController@store');
+// Route::get('handlungsvorschlag/{ID}', function($id){
+//     return new HandlungsvorschlagResource(handlungsvorschlag::find($id));
+// });
+// Route::get('handlungsvorschlag', function(){
+//     return HandlungsvorschlagResource::collection(handlungsvorschlag::all());
+// });
+
+
+
+Route::post('climadvice/store', 'ClimadviceController@store');
+Route::get('climadvice/index', 'ClimadviceController@index');

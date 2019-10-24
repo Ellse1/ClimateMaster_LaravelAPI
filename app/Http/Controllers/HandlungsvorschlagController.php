@@ -57,4 +57,5 @@ class HandlungsvorschlagController extends Controller
             ]);
 
     }
+    
 }
