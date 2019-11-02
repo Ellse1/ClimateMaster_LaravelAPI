@@ -15,9 +15,9 @@ class CreateClimadvicesTable extends Migration
     {
         Schema::create('climadvices', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name');
             $table->string('title');
             $table->string('shortDescription');
-            $table->mediumText('detailedDescription');
             $table->string('iconName');
             $table->timestamps();
         });

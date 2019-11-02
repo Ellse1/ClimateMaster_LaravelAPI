@@ -16,6 +16,7 @@ class ClimadviceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'title' => $this->title,
             'shortDescription' => $this->shortDescription,
             'iconName' => $this->iconName

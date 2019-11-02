@@ -26,10 +26,10 @@ class HandlungsvorschlagController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'titel' => 'required|unique:handlungsvorschlag,titel',
+            'title' => 'required|unique:handlungsvorschlag,titel',
             'kurzbeschreibung' => 'required|unique:handlungsvorschlag,kurzbeschreibung|max:200',
             'detailbeschreibung' => 'required',
-            'vorschlagIcon' => 'required|image|mimes:jpeg,jpg,png|max:2048'
+            'climadviceIcon' => 'required|image|mimes:jpeg,jpg,png|max:2048'
         ]);
 
         if($validator->fails()){
@@ -44,7 +44,7 @@ class HandlungsvorschlagController extends Controller
         $imagePath = request()->vorschlagIcon->move(public_path('images/vorschlaegeIcons'), $imageName);
 
         $handlungsvorschlag = Handlungsvorschlag::create([
-            'titel' => $request->titel,
+            'title' => $request->titel,
             'kurzbeschreibung' => $request->kurzbeschreibung,
             'detailbeschreibung' => $request->detailbeschreibung,
             'iconName' => $imageName
