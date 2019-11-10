@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Climadvice;
-use App\Http\Resources\ClimadviceResource;
+use App\BlogPost;
+use App\Http\Resources\BlogPostResource;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
-class ClimadviceController extends Controller
+class BlogPostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class ClimadviceController extends Controller
      */
     public function index()
     {
-        return ClimadviceResource::collection(climadvice::all());
+        return BlogPostResource::collection(BlogPost::all());
     }
 
 
@@ -41,10 +41,8 @@ class ClimadviceController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:climadvices,name',
-            'title' => 'required|unique:climadvices,title',
-            'shortDescription' => 'required|unique:climadvices,shortDescription|max:200',
-            'climadviceIcon' => 'required|image|mimes:jpeg,jpg,png|max:2048'
+            'previewContent' => 'required|',
+            'postContent' => 'required',
         ]);
 
         if($validator->fails()){
@@ -54,22 +52,36 @@ class ClimadviceController extends Controller
             ]);
         }
 
-        $imageName = $request->name . "." .$request->climadviceIcon->getClientOriginalExtension();
-        
-        $imagePath = request()->climadviceIcon->move(public_path('images/climadviceIcons'), $imageName);
 
 
-        $climadvice = Climadvice::create([
-            'name' => $request->name,
-            'title' => $request->title,
-            'shortDescription' => $request->shortDescription,
-            'iconName' => $imageName
+        $blogPost = BlogPost::create([
+            'previewContent' => $request->previewContent,
+            'postContent' => $request->postContent
         ]);
+        
+        //If I send a Image with this Post
+        if($request->postImage != "undefined"){
+            $validator= Validator::make($request->all(), [
+                'postImage' => 'required|image|mimes:jpeg,jpg,png|max:2048',//not required
+            ]);
+            if($validator->fails()){
+                return response()->json([
+                    'state' => 'error',
+                    'message' => $validator->errors()
+                ]);
+            }
 
-        return (new ClimadviceResource($climadvice))
+            $imageName = "blogPostImage" . $blogPost->id . "." . $request->postImage->getClientOriginalExtension();
+            $imagePath = request()->postImage->move(public_path('images/BlogPostImages'), $imageName);
+
+            $blogPost->imageName = $imageName;
+            $blogPost->save();
+        }
+        
+        return (new BlogPostResource($blogPost))
             ->additional([
                 'state' => 'success',
-                'message' => 'Climadvice erfolgreich erstellt'
+                'message' => 'BlogPost erfolgreich erstellt'
             ]);
 
     }

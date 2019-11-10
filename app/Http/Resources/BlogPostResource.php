@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HandlungsvorschlagResource extends JsonResource
+class BlogPostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,10 @@ class HandlungsvorschlagResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'titel' => $this->titel,
-            'kurzbeschreibung' => $this->kurzbeschreibung,
-            'iconName' => $this->iconName
+            'previewContent' => $this->previewContent,
+            'postContent' => $this->postContent,
+            'imageName' => $this->imageName,
+            'created_at' => $this->created_at
         ];
     }
 }

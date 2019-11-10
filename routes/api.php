@@ -39,3 +39,6 @@ Route::post('climadvice/store', 'ClimadviceController@store');
 Route::get('climadvice/index', 'ClimadviceController@index');
 Route::post('climadvice/update', 'ClimadviceController@update');
 Route::post('climadvice/destroy', 'ClimadviceController@destroy');
+
+Route::post('blogPost/store', 'BlogPostController@store');
+Route::get('blogPost/index', 'BlogPostController@index');
