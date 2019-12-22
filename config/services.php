@@ -15,9 +15,9 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'domain' => 'https://api.eu.mailgun.net/v3/mg.climate-master.com',
+        'secret' => 'ed22ac6cd4bffbb6a9baac009ac75017-5645b1f9-93f50259',
+        'endpoint' => 'api.eu.mailgun.net',
     ],
 
     'postmark' => [

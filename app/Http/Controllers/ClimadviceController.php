@@ -10,9 +10,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Http\Middleware\RoleAuthorization;
 
 class ClimadviceController extends Controller
 {
+
+    //Constructor:
+    public function __construct()
+    {
+        $this->middleware('auth.role:admin', ['except' => ['index']]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *

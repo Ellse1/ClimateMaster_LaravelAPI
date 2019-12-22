@@ -15,24 +15,30 @@ class AuthController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
             'email' => 'required|unique:users,email|email',
-            'password' => 'required'
+            'password' => 'required|min:8'
         ]);
 
         if($validator->fails()){
             return response()->json([
                 'state' => 'error',
-                'message' => 'Registrierung fehlgeschlagen',
-                'errors' => $validator->errors()
+                'message' => 'Registrierung fehlgeschlagen:' . $validator->errors()
             ]);
         }
 
-
+        //Create user with role: 'user'
         $user = User::create([
-             'email'    => $request->email,
-             'password' => $request->password,
-             'name' => $request->name,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'email'    => $request->email,
+            'password' => $request->password,
+            'role' => 'user',
+            'street' => $request->street,
+            'house_number' => $request->house_number,
+            'postcode' => $request->postcode,
+            'residence' => $request->residence
          ]);
 
 
@@ -47,6 +53,7 @@ class AuthController extends Controller
         return (new UserResource($user))
         ->additional([
             'state' => 'success',
+            'message' => 'Registrierung erfolgreich.',
             'meta' => [
                 'token' => $token
             ]

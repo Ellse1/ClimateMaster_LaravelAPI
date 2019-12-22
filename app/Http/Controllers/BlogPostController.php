@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
+
 class BlogPostController extends Controller
 {
     /**
@@ -173,9 +174,6 @@ class BlogPostController extends Controller
         ]);
     }
 
-
-
-    
 
     // /**
     //  * Display the specified resource.
