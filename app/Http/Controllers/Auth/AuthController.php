@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
+use App\Mail\password_reset;
 use App\Mail\registered;
 use App\Mail\verification;
 use Carbon\Carbon;
@@ -134,6 +135,7 @@ class AuthController extends Controller
         ]);
     }
 
+    //Verificates a user email after register
     public function verification(Request $request){
 
         $validator = Validator::make($request->all(), [
@@ -235,7 +237,95 @@ class AuthController extends Controller
 
     }
 
+    //Sends the PasswordResetLink
+    public function sendPasswordResetLink(Request $request){
 
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Konnte den ResetLink nicht verschicken.' . $validator->errors()
+            ]);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        //If user does't exist:
+        if($user == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Tut uns leid. Leider kein Konto gefunden'
+            ]);
+        }
+
+        //Generate password reset code and send to user
+        $user->password_reset = true;
+        $password_reset_code = STR::random(22);
+        $user->password_reset_code = bcrypt($password_reset_code);
+        $user->save();
+        Mail::to($user->email)->send(new password_reset($user, $password_reset_code));
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Wir haben Ihnen einen Email mit einem Link gesendet. 
+            Folgen Sie diesem Link, um Ihr Passwort zurückzusetzen.'
+        ]);
+    }
+
+    //Sets the new Password:
+    public function setNewPassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'userID' => 'required|integer',
+            'password_reset_code' => 'required',
+            'password' => 'required|min:8'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Passwort zurücksetzen fehlgeschlagen. ' . $validator->errors()
+            ]);
+        }
+
+        //check if user available and reset_password == true
+        $user = User::find($request->userID);
+        error_log($user->id);
+        error_log($user->password_reset);
+        if($user == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Tut uns leid. Kein Konto für den Passwortreset gefunden.'
+            ]);
+        }
+        else if(!$user->password_reset){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Tut uns leid. Kein Konto für den Passwortreset gefunden.'
+            ]);
+        }
+
+        //if verification code is not right:
+        if(!Hash::check($request->password_reset_code, $user->password_reset_code)){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Tut uns leid. Wir konnten dein Passwort nicht ändern, weil der Code nicht gültig war.
+                 Versuche über "Passwort vergessen" einen neuen Code anzufordern.'
+            ]);
+        }
+
+        $user->password = $request->password; //bcrypt in User Model
+        $user->password_reset = false;
+        $user->password_reset_code = null;
+        $user->save();
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Passwort wurde erfolgreich geändert. Sie können sich jetzt einloggen.'
+        ]);
+
+    }
 
     // protected function respondWithToken($token)
     // {

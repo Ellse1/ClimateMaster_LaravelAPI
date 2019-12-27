@@ -22,13 +22,19 @@ use Illuminate\Http\Request;
 //     return new UserResource($request->user());
 // });
 
-//REGISTRATION AND LOGIN
-Route::post('/verification', 'Auth\AuthController@verification');
+//REGISTRATION,  LOGIN, GET_USER, LOGOUT
 Route::post('/register', 'Auth\AuthController@register');
 Route::post('/login', 'Auth\AuthController@login');
 Route::get('/user', 'Auth\AuthController@user');//Gets the signed in User
 Route::post('/logout', 'Auth\AuthController@logout');
+
+//EMAIL VERIFICATION
 Route::post('/resendVerificationLink', 'Auth\AuthController@resendVerificationLink');
+Route::post('/verification', 'Auth\AuthController@verification');
+
+//PASSWORD RESET
+Route::post('/sendResetPasswordLink', 'Auth\AuthController@sendPasswordResetLink');
+Route::post('/passwordReset', 'Auth\AuthController@setNewPassword');
 
 //CLIMADVICE
 Route::post('climadvice/store', 'ClimadviceController@store');
