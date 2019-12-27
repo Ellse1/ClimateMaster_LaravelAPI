@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Http\Middleware\RoleAuthorization;
+use App\Mail\registered;
+
+//toTestMail
+use Illuminate\Support\Facades\Mail;
+
 
 class ClimadviceController extends Controller
 {
