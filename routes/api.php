@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 // });
 
 //REGISTRATION,  LOGIN, GET_USER, LOGOUT
-Route::post('/register', 'Auth\AuthController@register');
+// Route::post('/register', 'Auth\AuthController@register');
 Route::post('/login', 'Auth\AuthController@login');
 Route::get('/user', 'Auth\AuthController@user');//Gets the signed in User
 Route::post('/logout', 'Auth\AuthController@logout');
