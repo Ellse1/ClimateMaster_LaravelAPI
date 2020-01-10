@@ -9,9 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use App\Http\Middleware\RoleAuthorization;
-use App\Mail\registered;
 
 //toTestMail
 use Illuminate\Support\Facades\Mail;
@@ -58,7 +55,9 @@ class ClimadviceController extends Controller
             'name' => 'required|unique:climadvices,name',
             'title' => 'required|unique:climadvices,title',
             'shortDescription' => 'required|unique:climadvices,shortDescription|max:200',
-            'climadviceIcon' => 'required|image|mimes:jpeg,jpg,png|max:2048'
+            'iconName' => 'required',
+            'easy' => 'required',
+            'climateMasterArea' => 'required'
         ]);
 
         if($validator->fails()){
@@ -68,16 +67,14 @@ class ClimadviceController extends Controller
             ]);
         }
 
-        $imageName = $request->name . "." .$request->climadviceIcon->getClientOriginalExtension();
         
-        $imagePath = request()->climadviceIcon->move(public_path('images/climadviceIcons'), $imageName);
-
-
         $climadvice = Climadvice::create([
             'name' => $request->name,
             'title' => $request->title,
             'shortDescription' => $request->shortDescription,
-            'iconName' => $imageName
+            'iconName' => $request->iconName,
+            'easy' => (int)$request->easy,
+            'climateMasterArea' => $request->climateMasterArea
         ]);
 
         return (new ClimadviceResource($climadvice))
@@ -111,7 +108,10 @@ class ClimadviceController extends Controller
             'id' => "required",
             'name' => "required",
             'title' => "required",
-            'shortDescription' => "required"
+            'shortDescription' => "required",
+            'iconName' => "required",
+            'easy' => "required",
+            'climateMasterArea' => "required"
         ]);
 
 
@@ -125,6 +125,9 @@ class ClimadviceController extends Controller
         $climadvice = Climadvice::find($request->id);
         $climadvice->title = $request->title;
         $climadvice->shortDescription = $request->shortDescription;
+        $climadvice->iconName = $request->iconName;
+        $climadvice->easy = (int)$request->easy;
+        $climadvice->climateMasterArea = $request->climateMasterArea;
         $climadvice->save();
 
         return (new ClimadviceResource($climadvice))
@@ -164,8 +167,6 @@ class ClimadviceController extends Controller
 
         //Remove Image
         $climadvice = Climadvice::find($request->id);
-        $imagePath = public_path('images/climadviceIcons/') . $climadvice->iconName;
-        File::delete($imagePath);
 
         $deleted =  $climadvice->forceDelete();
 
