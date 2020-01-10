@@ -19,7 +19,9 @@ class ClimadviceResource extends JsonResource
             'name' => $this->name,
             'title' => $this->title,
             'shortDescription' => $this->shortDescription,
-            'iconName' => $this->iconName
+            'iconName' => $this->iconName,
+            'easy' => $this->easy,
+            'climateMasterArea' => $this->climateMasterArea
         ];
     }
 }

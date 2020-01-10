@@ -291,8 +291,7 @@ class AuthController extends Controller
 
         //check if user available and reset_password == true
         $user = User::find($request->userID);
-        error_log($user->id);
-        error_log($user->password_reset);
+
         if($user == null){
             return response()->json([
                 'state' => 'error',

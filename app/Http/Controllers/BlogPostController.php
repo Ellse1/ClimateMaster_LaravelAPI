@@ -10,10 +10,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-
+use phpDocumentor\Reflection\Types\Integer;
 
 class BlogPostController extends Controller
 {
+
+    //Constructor:
+    public function __construct()
+    {
+        $this->middleware('auth.role:admin', ['except' => ['index', 'getBlogPost']]);
+    }
+
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -21,8 +30,31 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        return BlogPostResource::collection(BlogPost::all());
+        return (BlogPostResource::collection(BlogPost::all()->sortByDesc('created_at')))
+            ->additional([
+                'state' => 'success',
+                'message' => 'Erfolgreich alles BlogPosts zurückgegeben.'
+            ]);
     }
+
+
+    //Get only one blogPost
+    public function getBlogPost(Request $request){
+
+        $blogPost = BlogPost::find($request->id);
+        
+        if($blogPost == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es konnte kein BlogPost gefunden werden'
+            ]);
+        }
+        return (new BlogPostResource($blogPost))->additional([
+            'state' => 'success',
+            'message' => 'Einen BlogPost zurück gegeben.'
+        ]);
+    }
+
 
 
     /**
@@ -39,10 +71,11 @@ class BlogPostController extends Controller
                 'state' => 'error',
                 'message' => 'Du bist nicht eingeloggt'
             ]);
-        }
+        }        
 
         $validator = Validator::make($request->all(), [
-            'previewContent' => 'required|',
+            'heading' => 'required',
+            'previewContent' => 'required',
             'postContent' => 'required',
         ]);
 
@@ -56,6 +89,7 @@ class BlogPostController extends Controller
 
 
         $blogPost = BlogPost::create([
+            'heading' => $request->heading,
             'previewContent' => $request->previewContent,
             'postContent' => $request->postContent
         ]);
@@ -105,14 +139,13 @@ class BlogPostController extends Controller
             ]);
         }
 
-        //validate
-        $validator = Validator::make($request->all(), [
-            'id' => "required",
-            'name' => "required",
-            'title' => "required",
-            'shortDescription' => "required"
-        ]);
 
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'heading' => 'required',
+            'previewContent' => 'required',
+            'postContent' => 'required',
+        ]);
 
         if($validator->fails()){
             return response()->json([
@@ -121,16 +154,40 @@ class BlogPostController extends Controller
             ]);
         }
 
-        $climadvice = Climadvice::find($request->id);
-        $climadvice->title = $request->title;
-        $climadvice->shortDescription = $request->shortDescription;
-        $climadvice->save();
+        $blogPost = BlogPost::find($request->id);
+        $blogPost->heading = $request->heading;
+        $blogPost->previewContent = $request->previewContent;
+        $blogPost->postContent = $request->postContent;
 
-        return (new ClimadviceResource($climadvice))
-            ->additional([
-                'state' => 'success',
-                'message' => 'Climadvice erfolgreich geändert'
+        //If I send a Image with this Post
+        if($request->postImage != "undefined"){
+            $validator= Validator::make($request->all(), [
+                'postImage' => 'required|image|mimes:jpeg,jpg,png|max:2048',//not required
             ]);
+            if($validator->fails()){
+                return response()->json([
+                    'state' => 'error',
+                    'message' => $validator->errors()
+                ]);
+            }
+
+            //If there is already a image for this blogPost -> Delete it:
+            $imageName = "blogPostImage" . $blogPost->id . "." . $request->postImage->getClientOriginalExtension();
+            if(File::exists(public_path("/images/BlogPostImages/" . $imageName))){
+                 File::delete(public_path("/images/BlogPostImages/" . $imageName));
+             }
+
+            $imagePath = request()->postImage->move(public_path('images/BlogPostImages'), $imageName);
+
+            $blogPost->imageName = $imageName;
+        }
+
+        $blogPost->save();
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Der Blogpost wurde erfolgreich geändert.'
+        ]);
 
     }
 
@@ -143,6 +200,7 @@ class BlogPostController extends Controller
      */
     public function destroy(Request $request)
     {
+        //Check if user is logged in
         if(Auth::check() == false){
             return response()->json([
                 'state' => 'error',
@@ -161,52 +219,21 @@ class BlogPostController extends Controller
             ]);
         }
 
-        //Remove Image
-        $climadvice = Climadvice::find($request->id);
-        $imagePath = public_path('images/climadviceIcons/') . $climadvice->iconName;
-        File::delete($imagePath);
+        //Gets the blogPost
+        $blogPost = BlogPost::find($request->id);
 
-        $deleted =  $climadvice->forceDelete();
+        //If Image exists -> remove
+        if($blogPost->imageName != null){
+            $imagePath = public_path("/images/BlogPostImages/" . $blogPost->imageName);
+            File::delete($imagePath);
+        }
+
+        $deleted = $blogPost->forceDelete();
 
         return response()->json([
             'state' => 'success',
-            'message' => 'Climadvice erfolgreich gelöscht'
+            'message' => 'BlogPost erfolgreich gelöscht'
         ]);
     }
 
-
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show($id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function edit($id)
-    // {
-    //     //
-    // }
-
-
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy($id)
-    // {
-    //     //
-    // }
 }

@@ -16,6 +16,7 @@ class BlogPostResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'heading' => $this->heading,
             'previewContent' => $this->previewContent,
             'postContent' => $this->postContent,
             'imageName' => $this->imageName,

@@ -1,5 +1,6 @@
 <?php
 
+use App\BlogPost;
 use App\Handlungsvorschlag;
 use App\Http\Controllers\ClimadviceController;
 use App\Http\Resources\HandlungsvorschlagResource;
@@ -45,3 +46,6 @@ Route::post('climadvice/destroy', 'ClimadviceController@destroy');
 //BLOG
 Route::post('blogPost/store', 'BlogPostController@store');
 Route::get('blogPost/index', 'BlogPostController@index');
+Route::get('blogPost/getBlogPost', 'BlogPostController@getBlogPost');
+Route::post('blogPost/update', 'BlogPostController@update');
+Route::post('blogPost/destroy', 'BlogPostController@destroy');
