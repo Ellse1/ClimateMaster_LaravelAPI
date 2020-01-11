@@ -31,7 +31,11 @@ class ClimadviceController extends Controller
      */
     public function index()
     {
-        return ClimadviceResource::collection(climadvice::all());
+        return (ClimadviceResource::collection(climadvice::all()))
+        ->additional([
+            'state' => 'success',
+            'message' => 'Erfolgreich alle Climadvices zurückgegeben.'
+        ]);
     }
 
 

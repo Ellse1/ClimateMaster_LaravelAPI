@@ -16,7 +16,7 @@ class CreateShortInfosTable extends Migration
         Schema::create('short_infos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('climadvice_id')->references('id')->on('climadvices');
-            $table->string('infoText');
+            $table->string('infoText')->nullable();
             $table->timestamps();
         });
     }
