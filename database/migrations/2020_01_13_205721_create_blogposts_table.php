@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class BlogPostAddHeading extends Migration
+class CreateBlogpostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class BlogPostAddHeading extends Migration
      */
     public function up()
     {
-        Schema::table('blogposts', function (Blueprint $table) {
+        Schema::create('blogposts', function (Blueprint $table) {
+            $table->bigIncrements('id')->autoIncrement();
             $table->string('heading');
+            $table->mediumText('previewContent');
+            $table->mediumText('postContent');
+            $table->string('imageName')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +30,6 @@ class BlogPostAddHeading extends Migration
      */
     public function down()
     {
-        Schema::table('blogposts', function (Blueprint $table) {
-            $table->removeColumn('heading');
-        });
+        Schema::dropIfExists('blogposts');
     }
 }

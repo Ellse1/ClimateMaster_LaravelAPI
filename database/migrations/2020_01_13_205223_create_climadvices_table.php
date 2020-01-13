@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ClimadviceChangeImageToIconAddClimateMasterAreaAddEasy extends Migration
+class CreateClimadvicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class ClimadviceChangeImageToIconAddClimateMasterAreaAddEasy extends Migration
      */
     public function up()
     {
-        //From now on iconName is for font-awesome-icons not for image.png
-        Schema::table('climadvices', function (Blueprint $table) {
+        Schema::create('climadvices', function (Blueprint $table) {
+            $table->bigIncrements('id')->autoIncrement();
+            $table->string('name');
+            $table->string('title');
+            $table->string('shortDescription');
             $table->boolean('easy');
             $table->string('climateMasterArea');
+            $table->string('iconName');
+            $table->timestamps();
         });
     }
 
@@ -27,9 +32,6 @@ class ClimadviceChangeImageToIconAddClimateMasterAreaAddEasy extends Migration
      */
     public function down()
     {
-        Schema::table('climadvices', function (Blueprint $table) {
-            $table->dropColumn('easy');
-            $table->dropColumn('climateMasterArea');
-        });
+        Schema::dropIfExists('climadvices');
     }
 }
