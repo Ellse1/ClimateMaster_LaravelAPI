@@ -37,6 +37,10 @@ Route::post('/verification', 'Auth\AuthController@verification');
 Route::post('/sendResetPasswordLink', 'Auth\AuthController@sendPasswordResetLink');
 Route::post('/passwordReset', 'Auth\AuthController@setNewPassword');
 
+//USER
+Route::post('user/addProfilePicture', 'UserController@addProfilePicture');
+Route::post('user/getProfilePicture', 'UserController@getProfilePicture');
+
 //CLIMADVICE
 Route::post('climadvice/store', 'ClimadviceController@store');
 Route::get('climadvice/index', 'ClimadviceController@index');
