@@ -67,15 +67,28 @@ class UserController extends Controller
 
         if($request->street != "undefined" && $request->street != ""){
             $user->street = $request->street;
+        }else{
+            $user->street = NULL;
         }
+
+
         if($request->house_number != "undefined" && $request->house_number != ""){
             $user->house_number = $request->house_number;
+        }else{
+            $user->house_number = NULL;
         }
+        
+
         if($request->postcode != "undefined" && $request->postcode != ""){
             $user->postcode = $request->postcode;
+        }else{
+            $user->postcode = NULL;
         }
+
         if($request->residence != "undefined" && $request->residence != ""){
             $user->residence = $request->residence;
+        }else{
+            $request->residence = NULL;
         }
         
         $user->save();
