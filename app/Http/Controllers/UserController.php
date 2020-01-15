@@ -82,7 +82,7 @@ class UserController extends Controller
         if($request->postcode != "undefined" && $request->postcode != ""){
             $user->postcode = $request->postcode;
         }else{
-            $user->postcode = NULL;
+            $user->postcode = 0;
         }
 
         if($request->residence != "undefined" && $request->residence != ""){
