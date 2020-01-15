@@ -65,30 +65,31 @@ class UserController extends Controller
     public function saveAddress(Request $request){
         $user = auth()->user();
 
-        if($request->street != "undefined" && $request->street != ""){
+        if($request->street != "undefined"){
             $user->street = $request->street;
-        }else{
-            $user->street = NULL;
         }
 
-
-        if($request->house_number != "undefined" && $request->house_number != ""){
+        if($request->house_number != "undefined"){
             $user->house_number = $request->house_number;
-        }else{
-            $user->house_number = NULL;
         }
         
-
-        if($request->postcode != "undefined" && $request->postcode != ""){
-            $user->postcode = $request->postcode;
-        }else{
-            $user->postcode = 0;
+        if($request->postcode != "undefined"){
+            //Validate -> number 
+            $validator = Validator::make($request->all(), [
+                'postcode' => 'required|int'
+            ]);
+            if($validator->fails()){
+                return response()->json([
+                    'state' => 'error',
+                    'message' => 'Postleitzahl muss eine gerade Zahl sein.'
+                ]);
+            }else{
+                $user->postcode = $request->postcode;
+            }
         }
 
-        if($request->residence != "undefined" && $request->residence != ""){
+        if($request->residence != "undefined"){
             $user->residence = $request->residence;
-        }else{
-            $request->residence = NULL;
         }
         
         $user->save();

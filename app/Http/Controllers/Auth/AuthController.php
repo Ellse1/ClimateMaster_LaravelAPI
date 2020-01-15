@@ -123,7 +123,11 @@ class AuthController extends Controller
     }
 
     public function user(Request $request){
-        return new UserResource($request->user());
+        return (new UserResource($request->user()))
+        ->additional([
+            'state' => 'success',
+            'message' => 'Der aktuell angemeldete User wurde zurückgegeben.'
+        ]);
     }
 
 
