@@ -32,7 +32,6 @@ class UserController extends Controller
         $user->profile_picture_name = $fileName;
         $user->save();
 
-        // error_log($fileName);
 
         $image = Storage::get($path);
 
@@ -61,5 +60,29 @@ class UserController extends Controller
                 'message' => 'Diese Person hat keine Profilbild.'
             ]);
         }
+    }
+
+    public function saveAddress(Request $request){
+        $user = auth()->user();
+
+        if($request->street != "undefined" && $request->street != ""){
+            $user->street = $request->street;
+        }
+        if($request->house_number != "undefined" && $request->house_number != ""){
+            $user->house_number = $request->house_number;
+        }
+        if($request->postcode != "undefined" && $request->postcode != ""){
+            $user->postcode = $request->postcode;
+        }
+        if($request->residence != "undefined" && $request->residence != ""){
+            $user->residence = $request->residence;
+        }
+        
+        $user->save();
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Adressdaten erfolgreich gespeichert.'
+        ]);
     }
 }

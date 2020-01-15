@@ -40,6 +40,7 @@ Route::post('/passwordReset', 'Auth\AuthController@setNewPassword');
 //USER
 Route::post('user/addProfilePicture', 'UserController@addProfilePicture');
 Route::post('user/getProfilePicture', 'UserController@getProfilePicture');
+Route::post('user/saveAddress', 'UserController@saveAddress');
 
 //CLIMADVICE
 Route::post('climadvice/store', 'ClimadviceController@store');
