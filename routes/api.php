@@ -54,3 +54,7 @@ Route::get('blogPost/index', 'BlogPostController@index');
 Route::get('blogPost/getBlogPost', 'BlogPostController@getBlogPost');
 Route::post('blogPost/update', 'BlogPostController@update');
 Route::post('blogPost/destroy', 'BlogPostController@destroy');
+
+//Files
+Route::get('file/conceptSummary', 'FileController@showConceptSummary');
+Route::get('file/concept', 'FileController@showConcept');
