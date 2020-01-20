@@ -5,7 +5,6 @@ use App\Handlungsvorschlag;
 use App\Http\Controllers\ClimadviceController;
 use App\Http\Resources\HandlungsvorschlagResource;
 use App\Http\Resources\UserResource;
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +57,16 @@ Route::post('blogPost/destroy', 'BlogPostController@destroy');
 //Files
 Route::get('file/conceptSummary', 'FileController@showConceptSummary');
 Route::get('file/concept', 'FileController@showConcept');
+
+
+//COMPANY
+Route::post('company/store', 'CompanyController@store');
+Route::get('company/getCompany', 'CompanyController@getCompany');
+Route::post('company/update', 'CompanyController@update');
+Route::post('company/storeHeaderImage', 'CompanyController@storeHeaderImage');
+Route::post('company/storeLogoImage', 'CompanyController@storeLogoImage');
+
+
+//Company Slideshowimage
+Route::post('companyslideshowimage/store', 'CompanySlideshowimageController@store');
+Route::get('companyslideshowimage/getSlideshowimageByCompanyID', 'CompanySlideshowimageController@getSlideshowimageByCompanyID');

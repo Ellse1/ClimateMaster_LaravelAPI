@@ -28,7 +28,10 @@ class User extends Authenticatable implements JWTSubject
 
 
 
-
+    //Get the companies, the user is admin of
+    public function companies(){
+        return $this->belongsToMany(Company::class);
+    }
 
 
 

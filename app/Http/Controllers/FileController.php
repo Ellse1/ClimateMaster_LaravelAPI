@@ -16,8 +16,8 @@ class FileController extends Controller
         return response()->file(storage_path("app/files/conceptSummary.pdf"));
     }
 
-    public function showConcept(){
-        return response()->file(storage_path("app/files/concept.pdf"));
-    }
+    // public function showConcept(){
+    //     return response()->file(storage_path("app/files/concept.pdf"));
+    // }
 
 }
