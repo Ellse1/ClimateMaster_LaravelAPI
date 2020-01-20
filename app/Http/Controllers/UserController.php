@@ -76,7 +76,7 @@ class UserController extends Controller
         if($request->postcode != "undefined"){
             //Validate -> number 
             $validator = Validator::make($request->all(), [
-                'postcode' => 'required|int'
+                'postcode' => 'required|integer'
             ]);
             if($validator->fails()){
                 return response()->json([

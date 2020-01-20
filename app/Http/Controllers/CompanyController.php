@@ -11,12 +11,12 @@ class CompanyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:admin,user', ['except' => ['getCompany']]);
+        $this->middleware('auth.role:admin,user', ['except' => ['getCompany', 'getCompaniesByClimadviceName']]);
     }
 
 
     /**
-     * Return one Company 
+     * Return one Company by id
      */
     public function getCompany(Request $request){
         $validator = Validator::make($request->all(), [
@@ -40,6 +40,28 @@ class CompanyController extends Controller
             'message' => 'Firma wurde zurückgegeben.'
         ]);
     }
+
+    /**
+     * Return multiple companies depending on climadvice_name
+     */
+    public function getCompaniesByClimadviceName(Request $request){
+        $validator = Validator::make($request->all(), [
+            'climadvice_name' => 'required|exists:climadvices,name'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es muss ein verfügbarer climadvice_name mitgegeben werden. ' . $validator->errors()
+            ]);
+        }
+
+        return (CompanyResource::collection(Company::where('climadvice_name', $request->climadvice_name)->get()))
+                ->additional([
+                    'state' => 'success',
+                    'message' => 'Es wurden alle Firmen mit diesem climadvice_name zurück gegeben'
+                ]);
+    }
+
 
 
     /**

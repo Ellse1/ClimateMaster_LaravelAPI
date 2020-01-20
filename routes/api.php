@@ -62,6 +62,7 @@ Route::get('file/concept', 'FileController@showConcept');
 //COMPANY
 Route::post('company/store', 'CompanyController@store');
 Route::get('company/getCompany', 'CompanyController@getCompany');
+Route::get('company/getCompaniesByClimadviceName', 'CompanyController@getCompaniesByClimadviceName');
 Route::post('company/update', 'CompanyController@update');
 Route::post('company/storeHeaderImage', 'CompanyController@storeHeaderImage');
 Route::post('company/storeLogoImage', 'CompanyController@storeLogoImage');
