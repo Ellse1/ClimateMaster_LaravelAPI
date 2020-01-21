@@ -11,7 +11,7 @@ class CompanyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:admin,user', ['except' => ['getCompany', 'getCompanies', 'getCompaniesByClimadviceName']]);
+        $this->middleware('auth.role:admin,user', ['except' => ['getCompany', 'getCompanies', 'getActivatedCompaniesByClimadviceName']]);
     }
 
 
