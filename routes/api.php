@@ -63,7 +63,8 @@ Route::get('file/concept', 'FileController@showConcept');
 //COMPANY
 Route::post('company/store', 'CompanyController@store');
 Route::get('company/getCompany', 'CompanyController@getCompany');
-Route::get('company/getCompaniesByClimadviceName', 'CompanyController@getCompaniesByClimadviceName');
+Route::get('company/getCompanies', 'CompanyController@getCompanies');
+Route::get('company/getActivatedCompaniesByClimadviceName', 'CompanyController@getActivatedCompaniesByClimadviceName');
 Route::post('company/update', 'CompanyController@update');
 Route::post('company/storeHeaderImage', 'CompanyController@storeHeaderImage');
 Route::post('company/storeLogoImage', 'CompanyController@storeLogoImage');
@@ -73,3 +74,8 @@ Route::post('company/storeLogoImage', 'CompanyController@storeLogoImage');
 Route::post('companyslideshowimage/store', 'CompanySlideshowimageController@store');
 Route::get('companyslideshowimage/getSlideshowimageByCompanyID', 'CompanySlideshowimageController@getSlideshowimageByCompanyID');
 Route::post('companyslideshowimage/destroy', 'CompanySlideshowimageController@destroy');
+
+//ADMIN FUNCTIONALITY
+Route::post('admin/getCompaniesToActivate', 'AdminController@getCompaniesToActivate');
+Route::post('admin/activateCompany', 'AdminController@activateCompany');
+Route::post('admin/deactivateCompany', 'AdminController@deactivateCompany');
