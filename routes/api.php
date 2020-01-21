@@ -40,6 +40,7 @@ Route::post('/passwordReset', 'Auth\AuthController@setNewPassword');
 Route::post('user/addProfilePicture', 'UserController@addProfilePicture');
 Route::post('user/getProfilePicture', 'UserController@getProfilePicture');
 Route::post('user/saveAddress', 'UserController@saveAddress');
+Route::post('user/isCompanyAdmin', 'UserController@isCompanyAdmin');
 
 //CLIMADVICE
 Route::post('climadvice/store', 'ClimadviceController@store');
@@ -71,3 +72,4 @@ Route::post('company/storeLogoImage', 'CompanyController@storeLogoImage');
 //Company Slideshowimage
 Route::post('companyslideshowimage/store', 'CompanySlideshowimageController@store');
 Route::get('companyslideshowimage/getSlideshowimageByCompanyID', 'CompanySlideshowimageController@getSlideshowimageByCompanyID');
+Route::post('companyslideshowimage/destroy', 'CompanySlideshowimageController@destroy');

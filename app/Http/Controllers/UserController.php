@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -10,7 +11,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:user,admin');
+        $this->middleware('auth.role:user,admin', ['except' => ['isCompanyAdmin']]);
     }
 
 
@@ -98,5 +99,43 @@ class UserController extends Controller
             'state' => 'success',
             'message' => 'Adressdaten erfolgreich gespeichert.'
         ]);
+    }
+
+
+    /**
+     * Looks if the current user is Admin for a given company
+     * 
+     * @params -> company_id
+     */
+    public function isCompanyAdmin(Request $request){
+        $validator = Validator::make($request->all(), [
+            'company_id' => 'required|integer|exists:companies,id'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Keine valide company_id: ' . $validator->errors()
+            ]);
+        }
+
+        $company = Company::find($request->company_id);
+        $userID = auth()->user()->id;
+        $user = $company->users()->find($userID);
+
+        if($user == null){
+            return response()->json([
+                'isCompanyAdmin' => false,
+                'state' => 'success',
+                'message' => 'Die Berechtigung wurde erfolgreich überprüft.'
+            ]);
+        }
+        else{
+            return response()->json([
+                'isCompanyAdmin' => true,
+                'state' => 'success',
+                'message' => 'Die Berechtigung wurde erfolgreich überprüft.'
+            ]);
+        }
+
     }
 }

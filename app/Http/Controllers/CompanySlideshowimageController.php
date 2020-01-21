@@ -7,14 +7,14 @@ use App\CompanySlideshowimage;
 use App\Http\Resources\CompanySlideshowimageResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\File\File;
 
 class CompanySlideshowimageController extends Controller
 {
     public function __construct()
     {
-        
+        $this->middleware('auth.role:user,admin', ['except' => ['getSlideshowimageByCompanyID']]);
     }
-
 
     /**
      * Return the slideshowimages (From DB) for the company
@@ -82,5 +82,54 @@ class CompanySlideshowimageController extends Controller
             'message' => 'Slideshowimage wurde erfolgreich gespeichert.'
         ]);
 
+    }
+
+
+    /**
+     * Destroy a slideshowimage by id
+     */
+    public function destroy(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:company_slideshowimages,id'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es wurde keine valide id angegeben: ' . $validator->errors()
+            ]);
+        }
+
+        $companyslideshowimage = CompanySlideshowimage::find($request->id);
+
+        //Check if user is admin of company
+        $userID = auth()->user()->id;
+        $company = $companyslideshowimage->company;
+        $user = $company->users()->find($userID);
+
+        if($user == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Sie haben nicht die Berechtigung, diesen Bild zu löschen'
+            ]);
+        }
+
+        $imagePath = public_path('images/companyImages/slideshowimages/') .  $companyslideshowimage->image_name;
+
+        if(file_exists($imagePath)){
+            unlink($imagePath);
+        }
+        else{
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Das image konnte nicht gefunden werden.'
+            ]);
+        }
+        
+        $companyslideshowimage->delete();
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Das CompanySlideshowimage wurde erfolgreich gelöscht.'
+        ]);
     }
 }
