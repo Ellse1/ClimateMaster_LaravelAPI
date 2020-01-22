@@ -14,7 +14,7 @@ class CompanyController extends Controller
         $this->middleware('auth.role:admin,user', ['except' => ['getCompany', 'getCompanies', 'getActivatedCompaniesByClimadviceName']]);
     }
 
-
+        
     /**
      * Return one Company by id
      */
