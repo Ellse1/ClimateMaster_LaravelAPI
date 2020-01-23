@@ -37,7 +37,7 @@ class AuthController extends Controller
             ]);
         }
 
-        //Create user with role: 'user'
+        // Create user with role: 'user'
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -58,12 +58,12 @@ class AuthController extends Controller
                 'message' => 'Nicht autorisiert'], 401
             );
         }
-        
+
         //Send verification Mail
         $verificationCode = Str::random(22);
         $hashedCode = bcrypt($verificationCode);
         $user->email_verification_code = $hashedCode;
-        $user->save();
+        // $user->save();
         
         Mail::to($user->email)->send(new registered($user, $verificationCode));
 
