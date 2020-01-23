@@ -72,8 +72,9 @@ class AuthController extends Controller
         ->additional([
             'state' => 'success',
             'message' =>    'Registrierung erfolgreich. 
-                            Wir haben dir eine Email mit dem Aktivierungscode gesendet.
-                            Öffne deine Emails um dein ClimateMaster Konto zu aktivieren.',
+                            Wir haben dir eine Email mit dem Aktivierungslink gesendet.
+                            Öffne deine Emails um dein ClimateMaster Konto zu aktivieren.
+                            Falls du keine Email bekommen hast, kannst du einen neuen Aktivierungslink anfordern.',
             'meta' => [
                 'token' => $token
             ]
@@ -170,8 +171,8 @@ class AuthController extends Controller
         //if user_email is already verified:
         if($user->email_verified_at != null){
             return response()->json([
-                'state' => 'error',
-                'message' => 'Email ist schon verifiziert worden. Sie können sich direckt einloggen.'
+                'state' => 'success',
+                'message' => 'Email ist schon verifiziert worden. Sie können sich direkt einloggen.'
             ]);
         } 
 
