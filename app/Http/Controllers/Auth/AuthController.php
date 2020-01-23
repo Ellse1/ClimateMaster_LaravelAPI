@@ -63,7 +63,7 @@ class AuthController extends Controller
         $verificationCode = Str::random(22);
         $hashedCode = bcrypt($verificationCode);
         $user->email_verification_code = $hashedCode;
-        // $user->save();
+        $user->save();
         
         Mail::to($user->email)->send(new registered($user, $verificationCode));
 
