@@ -68,6 +68,10 @@ Route::get('company/getActivatedCompaniesByClimadviceName', 'CompanyController@g
 Route::post('company/update', 'CompanyController@update');
 Route::post('company/storeHeaderImage', 'CompanyController@storeHeaderImage');
 Route::post('company/storeLogoImage', 'CompanyController@storeLogoImage');
+Route::post('company/getAdminsOfCompany', 'CompanyController@getAdminsOfCompany');
+Route::post('company/addAdmin', 'CompanyController@addAdmin');
+Route::post('company/removeAdmin', 'CompanyController@removeAdmin');
+
 
 
 //Company Slideshowimage

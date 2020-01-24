@@ -22,13 +22,18 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
+        $messages = [
+            'username.unique' => "Der Benutzername ':input' ist schon vergeben. Waehle einen anderen Benutzernamen"
+        ];
+
         $validator = Validator::make($request->all(), [
             'firstname' => 'required',
             'lastname' => 'required',
             'username' => 'required|unique:users,username',
             'email' => 'required|unique:users,email|email',
             'password' => 'required|min:8'
-        ]);
+        ], $messages);
+
 
         if($validator->fails()){
             return response()->json([

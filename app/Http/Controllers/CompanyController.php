@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Http\Resources\CompanyResource;
+use App\Http\Resources\UserResource;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -257,5 +259,139 @@ class CompanyController extends Controller
             'message' => 'Firmenlogo wurde erfolgreich gespeichert.'
         ]);
 
+    }
+
+
+    /**
+     * Return all Users who are admins of this company
+     * 
+     * @param: company id
+     */
+    public function getAdminsOfCompany(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:companies,id'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es wurde keine valide Fimenid mitgegeben. ' . $validator->errors()
+            ]);
+        }
+
+        $company = Company::find($request->id);
+        // check if current user i allowed to update this company
+        $userID = auth()->user()->id;
+        $user = $company->users()->find($userID);
+        if($user == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
+            ]);
+        }
+
+        return (UserResource::collection($company->users()->get()))->additional([
+            'state' => 'success',
+            'message' => 'Es wurde alle Admins der Firma zurückgegeben'
+        ]);
+
+    }
+
+    /**
+     * Adds a admin to company
+     * @param: user email, company id
+     */
+    public function addAdmin(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:companies,id',
+            'email' => 'required|email|exists:users,email'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => "Es konnte kein Admin hinzugefügt werden: " . $validator->errors()
+            ]);
+        }
+
+        $company = Company::find($request->id);
+        // check if current user i allowed to update this company
+        $userID = auth()->user()->id;
+        $user = $company->users()->find($userID);
+        if($user == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
+            ]);
+        }
+
+
+        $adminToAdd = User::where('email', $request->email)->first();
+        // If this user is already admin of this company
+        if($adminToAdd->companies()->find($company->id)){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzer ist schon Admin dieser Firma'
+            ]);
+        }
+
+        $company->users()->attach($adminToAdd);
+        $company->save();
+
+        return (new UserResource($adminToAdd))->additional([
+            'state' => 'success',
+            'message' => 'Der Benutzer wurde erfolgreich zum Admin ernannt.'
+        ]);
+    }
+
+
+    /**
+     * Removes admin from company 
+     * @param: company id, user id
+     */
+    public function removeAdmin(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:companies,id',
+            'user_id' => 'required|integer|exists:users,id'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => $validator->errors()
+            ]);
+        }
+
+        $company = Company::find($request->id);
+        // check if current user i allowed to update this company
+        $userID = auth()->user()->id;
+        $user = $company->users()->find($userID);
+        if($user == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
+            ]);
+        }
+
+        // Can not remove himself
+        if($userID == $request->user_id){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Du kannst dich nicht selbst als Admin entfernen'
+            ]);
+        }
+
+        $adminToRemove = $company->users()->find($request->user_id);
+        if($adminToRemove == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es gibt diesen Admin für diese Firma nicht.'
+            ]);
+        }
+
+        $company->users()->detach($adminToRemove);
+        $company->save();
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Der Admin wurde erfolgreich entfernt.'
+        ]);
     }
 }
