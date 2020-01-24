@@ -150,19 +150,9 @@ class CompanyController extends Controller
                 'state' => 'error',
                 'message' => 'Falsche Eingabe: ' . $validator->errors()
             ]);
-        }
+        }      
 
-        $company = Company::find($request->id);
-        // check if current user i allowed to update this company
-        $userID = auth()->user()->id;
-        $user = $company->users()->find($userID);
-        if($user == null){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
-            ]);
-        }
-
+        $company = $this->getCompanyIfCurrentUserIsAllowedToEdit($request->id);
 
         $company->name = $request->name;
         $company->description = $request->description;
@@ -197,17 +187,8 @@ class CompanyController extends Controller
             ]);
         }
 
-        $company = Company::find($request->id);
-        // check if current user i allowed to update this company
-        $userID = auth()->user()->id;
-        $user = $company->users()->find($userID);
-        if($user == null){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
-            ]);
-        }
-        
+        $company = $this->getCompanyIfCurrentUserIsAllowedToEdit($request->id);
+
         $imageName = "headerImage" . $company->id . "." . $request->header_image->getClientOriginalExtension();
         $imagePath = request()->header_image->move(public_path('images/companyImages/headerImages'), $imageName);
 
@@ -237,16 +218,7 @@ class CompanyController extends Controller
             ]);
         }
 
-        $company = Company::find($request->id);
-        // check if current user i allowed to update this company
-        $userID = auth()->user()->id;
-        $user = $company->users()->find($userID);
-        if($user == null){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
-            ]);
-        }
+        $company = $this->getCompanyIfCurrentUserIsAllowedToEdit($request->id);
         
         $imageName = "logoImage" . $company->id . "." . $request->logo_image->getClientOriginalExtension();
         $imagePath = request()->logo_image->move(public_path('images/companyImages/logoImages'), $imageName);
@@ -278,16 +250,7 @@ class CompanyController extends Controller
             ]);
         }
 
-        $company = Company::find($request->id);
-        // check if current user i allowed to update this company
-        $userID = auth()->user()->id;
-        $user = $company->users()->find($userID);
-        if($user == null){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
-            ]);
-        }
+        $company = $this->getCompanyIfCurrentUserIsAllowedToEdit($request->id);
 
         return (UserResource::collection($company->users()->get()))->additional([
             'state' => 'success',
@@ -312,16 +275,7 @@ class CompanyController extends Controller
             ]);
         }
 
-        $company = Company::find($request->id);
-        // check if current user i allowed to update this company
-        $userID = auth()->user()->id;
-        $user = $company->users()->find($userID);
-        if($user == null){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
-            ]);
-        }
+        $company = $this->getCompanyIfCurrentUserIsAllowedToEdit($request->id);
 
 
         $adminToAdd = User::where('email', $request->email)->first();
@@ -359,16 +313,9 @@ class CompanyController extends Controller
             ]);
         }
 
-        $company = Company::find($request->id);
-        // check if current user i allowed to update this company
-        $userID = auth()->user()->id;
-        $user = $company->users()->find($userID);
-        if($user == null){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.'
-            ]);
-        }
+        $company = $this->getCompanyIfCurrentUserIsAllowedToEdit($request->id);
+
+        $userID = auth()->user()->id;        
 
         // Can not remove himself
         if($userID == $request->user_id){
@@ -393,5 +340,23 @@ class CompanyController extends Controller
             'state' => 'success',
             'message' => 'Der Admin wurde erfolgreich entfernt.'
         ]);
+    }
+
+
+    /**
+     * Returns the company, if the current user is authorized for editing this company,
+     * if not authorized -> throw exception
+     * @param: companyID
+     */
+    private function getCompanyIfCurrentUserIsAllowedToEdit($companyID){
+        $company = Company::find($companyID);
+        // check if current user i allowed to update this company
+        $userID = auth()->user()->id;
+        $user = $company->users()->find($userID);
+        if($user == null){
+            abort(403, 'Sie haben keine Berechtigung diese Firmendaten zu bearbeiten. Tut uns Leid.');
+        }else{
+            return $company;
+        }
     }
 }
