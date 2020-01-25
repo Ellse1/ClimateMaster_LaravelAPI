@@ -139,6 +139,13 @@ class AuthController extends Controller
 
     public function logout()
     {
+        // Set last login
+        $userID = auth()->user()->id;
+
+        $user = User::find($userID);
+        $user->last_login =  Carbon::now();
+        $user->save();
+
         auth()->logout();
 
         return response()->json([

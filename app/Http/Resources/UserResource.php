@@ -26,7 +26,8 @@ class UserResource extends JsonResource
             'postcode' => $this->postcode,
             'residence' => $this->residence,
             'role' => $this->role,
-            'email_verified_at' => $this->email_verified_at
+            'email_verified_at' => $this->email_verified_at,
+            'last_login' => $this->last_login
         ];
     }
 }
