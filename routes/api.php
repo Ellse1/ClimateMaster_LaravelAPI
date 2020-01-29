@@ -83,3 +83,12 @@ Route::post('companyslideshowimage/destroy', 'CompanySlideshowimageController@de
 Route::post('admin/getCompaniesToActivate', 'AdminController@getCompaniesToActivate');
 Route::post('admin/activateCompany', 'AdminController@activateCompany');
 Route::post('admin/deactivateCompany', 'AdminController@deactivateCompany');
+
+//CO2Calculation
+Route::post('co2calculation/store', "CO2CalculationController@store");
+Route::post('co2calculation/getLatestCalculation', 'CO2CalculationController@getLatestCalculation');
+
+//Climatemaster_steps_completed
+Route::post('climatemaster_steps_completed/getCurrentClimatemaster_steps_completed', 'Climatemaster_steps_completedController@getCurrentClimatemaster_steps_completed');
+Route::post('climatemaster_steps_completed/reduceShortTermCompleted', 'Climatemaster_steps_completedController@reduceShortTermCompleted');
+Route::post('climatemaster_steps_completed/customizeCalculationCompleted', 'Climatemaster_steps_completedController@customizeCalculationCompleted');

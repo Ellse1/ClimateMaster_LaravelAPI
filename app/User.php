@@ -33,7 +33,15 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Company::class);
     }
 
+    //Gets the climatemasters the user has
+    public function climatemasters(){
+        return $this->hasMany(ClimateMaster::class);
+    }
 
+    //Returns all models of Climatemaster_steps_completed (one per year)
+    public function climatemaster_steps_completed(){
+        return $this->hasMany(Climatemaster_steps_completed::class);
+    }
 
 
     use Notifiable;
