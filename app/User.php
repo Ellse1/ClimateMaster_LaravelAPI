@@ -35,7 +35,7 @@ class User extends Authenticatable implements JWTSubject
 
     //Gets the climatemasters the user has
     public function climatemasters(){
-        return $this->hasMany(ClimateMaster::class);
+        return $this->hasMany(Climatemaster::class);
     }
 
     //Returns all models of Climatemaster_steps_completed (one per year)
