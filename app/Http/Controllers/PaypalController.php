@@ -81,11 +81,11 @@ class PaypalController extends Controller
             $pricePerTonnCO2 = $totalPrice;
         }
 
-        $string_totalPrice = floatval(number_format($totalPrice, 2)); //two digits after comma
+        $float_totalPrice = floatval(number_format($totalPrice, 2)); //two digits after comma
 
         error_log("qty : " . $quantity);
         error_log("price per tonn: " . $pricePerTonnCO2);
-        error_log("price total: " . $string_totalPrice);
+        error_log("price total: " . $float_totalPrice);
 
         $data = [];
         $data['items'] = [
@@ -110,16 +110,18 @@ class PaypalController extends Controller
 
 
         $data['invoice_id'] = $invoice->id;
-        $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
+        $data['invoice_description'] = "Order #{$invoice->id} Invoice";
         $data['return_url'] = route('paypal.success');
         $data['cancel_url'] = route('paypal.cancel');
-        $data['total'] = $string_totalPrice;
+        $data['total'] = $float_totalPrice;
 
         $provider = new ExpressCheckout();
 
         $response = $provider->setExpressCheckout($data);
 
         $response = $provider->setExpressCheckout($data, true);
+
+        return $response;
 
         return redirect($response['paypal_link']);
     
