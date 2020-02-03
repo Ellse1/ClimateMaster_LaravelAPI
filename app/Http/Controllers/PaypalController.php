@@ -133,7 +133,7 @@ class PaypalController extends Controller
     public function cancel()
     {
         //return to error page
-        return redirect('http://localhost:3000/error_pages/paypal_climatemasterpayment_canceled');
+        return redirect('https://www.climate-master.com/error_pages/paypal_climatemasterpayment_canceled');
     }
   
     /**
@@ -161,9 +161,9 @@ class PaypalController extends Controller
 
             //check if the payment amount is surely big enough to become climatemaster for the year of payment
             if( $payment->amount_paid < $payment->amount_to_pay){
-                return redirect('http://localhost:3000/myClimateMaster')->with([
+                return redirect('https://www.climate-master.com/myClimateMaster')->with([
                     'state' => 'error',
-                    'message' => 'Der bezahlte Betrag war kleiner als der zu zahlende Betrag. Etwas ist schief gelaufen, bitte melden Sie sich direkt bei uns'
+                    'message' => 'Der bezahlte Betrag war kleiner als der zu zahlende Betrag. Etwas ist schief gelaufen, bitte melden Sie sich direkt persönliche bei uns'
                 ]);
             }
 
@@ -178,7 +178,7 @@ class PaypalController extends Controller
 
 
 
-            return redirect('http://localhost:3000/myClimateMaster?paid=true')->with([
+            return redirect('https://www.climate-master.com/myClimateMaster?paid=true')->with([
                 'state' => 'success',
                 'message' => 'Erfolgreich zum ClimateMaster dieses Jahres aufgestiegen!'
             ]);
