@@ -115,17 +115,11 @@ class PaypalController extends Controller
         $data['cancel_url'] = route('paypal.cancel');
         $data['total'] = $float_totalPrice;
 
-        return $data;
-
         $provider = new ExpressCheckout();
 
         $response = $provider->setExpressCheckout($data);
 
-        return $response;
-
         $response = $provider->setExpressCheckout($data, true);
-
-        return $response;
 
         return redirect($response['paypal_link']);
     
