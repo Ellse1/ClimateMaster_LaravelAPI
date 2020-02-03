@@ -119,6 +119,8 @@ class PaypalController extends Controller
 
         $response = $provider->setExpressCheckout($data);
 
+        return $response;
+
         $response = $provider->setExpressCheckout($data, true);
 
         return $response;
