@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -23,6 +24,12 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'profilePicture' => 'required|image|mimes:jpeg,jpg,png|max:2048'
         ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Format oder größe stimmen nicht. ' . $validator->errors()
+            ]);
+        }
 
         $user = auth()->user();
         $userID = $user ->id;
@@ -36,9 +43,12 @@ class UserController extends Controller
 
         $image = Storage::get($path);
 
-        // return response()->file(storage_path('app/' . $path), ['Content-Type' , 'Image']);
-        return base64_encode($image);
-
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Das Profilbild wurde erfolgreich gespeichert.',
+            'image_base64' => base64_encode($image)
+        ]);
+        
     }
 
     public function getProfilePicture(Request $request){
@@ -47,7 +57,11 @@ class UserController extends Controller
         if($filename != null){
             if(Storage::exists("/images/profilePictures/" . $filename)){
                 $image = Storage::get("/images/profilePictures/" . $filename);
-                return base64_encode($image);
+                return response()->json([
+                    'state' => 'success',
+                    'message' => 'Das Profilbild wurde erfolgreich zurückgegeben.',
+                    'image_base64' => base64_encode($image)
+                ]);
             }
             else{
                 return response()->json([
@@ -100,6 +114,7 @@ class UserController extends Controller
             'message' => 'Adressdaten erfolgreich gespeichert.'
         ]);
     }
+
 
 
     /**

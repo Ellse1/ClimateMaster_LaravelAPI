@@ -41,6 +41,9 @@ Route::post('user/addProfilePicture', 'UserController@addProfilePicture');
 Route::post('user/getProfilePicture', 'UserController@getProfilePicture');
 Route::post('user/saveAddress', 'UserController@saveAddress');
 Route::post('user/isCompanyAdmin', 'UserController@isCompanyAdmin');
+Route::post('user/getPictureForImagecreator', 'UserController@getPictureForImageCreator');
+Route::post('user/addPictureForImagecreator', 'UserController@addPictureForImageCreator');
+
 
 //CLIMADVICE
 Route::post('climadvice/store', 'ClimadviceController@store');
@@ -59,7 +62,6 @@ Route::post('blogPost/destroy', 'BlogPostController@destroy');
 Route::get('file/conceptSummary', 'FileController@showConceptSummary');
 Route::get('file/concept', 'FileController@showConcept');
 
-
 //COMPANY
 Route::post('company/store', 'CompanyController@store');
 Route::get('company/getCompany', 'CompanyController@getCompany');
@@ -71,8 +73,6 @@ Route::post('company/storeLogoImage', 'CompanyController@storeLogoImage');
 Route::post('company/getAdminsOfCompany', 'CompanyController@getAdminsOfCompany');
 Route::post('company/addAdmin', 'CompanyController@addAdmin');
 Route::post('company/removeAdmin', 'CompanyController@removeAdmin');
-
-
 
 //Company Slideshowimage
 Route::post('companyslideshowimage/store', 'CompanySlideshowimageController@store');
@@ -92,3 +92,15 @@ Route::post('co2calculation/getLatestCalculation', 'CO2CalculationController@get
 Route::post('climatemaster_steps_completed/getCurrentClimatemaster_steps_completed', 'Climatemaster_steps_completedController@getCurrentClimatemaster_steps_completed');
 Route::post('climatemaster_steps_completed/reduceShortTermCompleted', 'Climatemaster_steps_completedController@reduceShortTermCompleted');
 Route::post('climatemaster_steps_completed/customizeCalculationCompleted', 'Climatemaster_steps_completedController@customizeCalculationCompleted');
+
+//Paypal
+Route::get('paypal/payment', 'PayPalController@payment');
+Route::get('paypal/cancel', 'PayPalController@cancel')->name('paypal.cancel');
+Route::get('paypal/success', 'PayPalController@success')->name('paypal.success');
+
+//PictureForImageCreator
+Route::post('picture_for_imagecreator/store', 'PictureForImagecreatorController@store');
+Route::post('picture_for_imagecreator/getPicturesOfCurrentUser', 'PictureForImagecreatorController@getPicturesOfCurrentUser');
+Route::post('picture_for_imagecreator/destroy', 'PictureForImagecreatorController@destroy');
+Route::post('picture_for_imagecreator/download', 'PictureForImagecreatorController@download');
+Route::post('picture_for_imagecreator/updateSharingPermitted', 'PictureForImagecreatorController@updateSharingPermitted');

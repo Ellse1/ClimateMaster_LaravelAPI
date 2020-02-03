@@ -43,7 +43,17 @@ class CO2CalculationController extends Controller
             ]);
         }
 
-
+        //Check if in his year, climatemaster_steps_completed->customize_calculation is not already finished!   If finished, user is not allowed to change again!
+        $user = User::find(auth()->user()->id);
+        $climatemaster_steps_completed = $user->climatemaster_steps_completed->where('year', Carbon::now()->year)->first();
+        if($climatemaster_steps_completed != null){
+            if($climatemaster_steps_completed->customize_calculation == true){
+                return response()->json([
+                    'state' => 'error',
+                    'message' => 'Der Schritt "Berechnung anpassen" wurde schon erfolgreich abgeschlossen. Für dieses Jahr, kann die Berechnung nicht mehr aktualisiert werden.'
+                ]); 
+            }
+        }
         $ubaRequest = new Client();
         $ubaResponse = $ubaRequest->get($request->link_uba_co2calculation);
         $body = $ubaResponse->getBody();
@@ -81,7 +91,6 @@ class CO2CalculationController extends Controller
         $co2Calculation->total_emissions = $co2Calculation->public_emissions + $co2Calculation->consumption + $co2Calculation->nutrition + $co2Calculation->mobility + $co2Calculation->heating_electricity;
 
         //Look if user has a climateMaster for the current year
-        $user = User::find(auth()->user()->id);
         $climatemaster = $user->climatemasters()->where('year', Carbon::now()->year)->first();
 
         if($climatemaster == null){

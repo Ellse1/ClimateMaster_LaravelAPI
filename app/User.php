@@ -43,6 +43,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Climatemaster_steps_completed::class);
     }
 
+    public function pictures_for_imagecreator(){
+        return $this->hasMany(Picture_for_imagecreator::class);
+    }
+
 
     use Notifiable;
 
