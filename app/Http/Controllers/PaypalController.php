@@ -81,7 +81,7 @@ class PaypalController extends Controller
             $pricePerTonnCO2 = $totalPrice;
         }
 
-        $string_totalPrice = number_format($totalPrice, 2); //two digits after comma
+        $string_totalPrice = floatval(number_format($totalPrice, 2)); //two digits after comma
 
         error_log("qty : " . $quantity);
         error_log("price per tonn: " . $pricePerTonnCO2);
