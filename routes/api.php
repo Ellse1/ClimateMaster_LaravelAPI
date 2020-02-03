@@ -94,9 +94,9 @@ Route::post('climatemaster_steps_completed/reduceShortTermCompleted', 'Climatema
 Route::post('climatemaster_steps_completed/customizeCalculationCompleted', 'Climatemaster_steps_completedController@customizeCalculationCompleted');
 
 //Paypal
-Route::get('paypal/payment', 'PayPalController@payment');
-Route::get('paypal/cancel', 'PayPalController@cancel')->name('paypal.cancel');
-Route::get('paypal/success', 'PayPalController@success')->name('paypal.success');
+Route::get('paypal/payment', 'PaypalController@payment');
+Route::get('paypal/cancel', 'PaypalController@cancel')->name('paypal.cancel');
+Route::get('paypal/success', 'PaypalController@success')->name('paypal.success');
 
 //PictureForImageCreator
 Route::post('picture_for_imagecreator/store', 'PictureForImagecreatorController@store');
