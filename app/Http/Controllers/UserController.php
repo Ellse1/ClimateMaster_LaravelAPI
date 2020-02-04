@@ -77,7 +77,7 @@ class UserController extends Controller
         }
     }
 
-    public function saveAddress(Request $request){
+    public function saveAddressAndInstagram(Request $request){
         $user = auth()->user();
 
         if($request->street != "undefined"){
@@ -88,7 +88,8 @@ class UserController extends Controller
             $user->house_number = $request->house_number;
         }
         
-        if($request->postcode != "undefined"){
+        if($request->postcode != "undefined" && $request->postcode != null){
+            error_log($request->postcode);
             //Validate -> number 
             $validator = Validator::make($request->all(), [
                 'postcode' => 'required|integer'
@@ -106,12 +107,15 @@ class UserController extends Controller
         if($request->residence != "undefined"){
             $user->residence = $request->residence;
         }
+        if($request->instagram_name != "undefined"){
+            $user->instagram_name = $request->instagram_name;
+        }
         
         $user->save();
 
         return response()->json([
             'state' => 'success',
-            'message' => 'Adressdaten erfolgreich gespeichert.'
+            'message' => 'Adressdaten bzw. Instagram Name erfolgreich gespeichert.'
         ]);
     }
 

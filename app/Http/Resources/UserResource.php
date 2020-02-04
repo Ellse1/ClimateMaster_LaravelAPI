@@ -27,7 +27,9 @@ class UserResource extends JsonResource
             'residence' => $this->residence,
             'role' => $this->role,
             'email_verified_at' => $this->email_verified_at,
-            'last_login' => $this->last_login
+            'last_login' => $this->last_login,
+            'last_logout' => $this->last_logout,
+            'instagram_name' => $this->instagram_name
         ];
     }
 }

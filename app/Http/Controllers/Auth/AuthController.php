@@ -115,7 +115,10 @@ class AuthController extends Controller
                 Folgen Sie diesem Link, um Ihr Konto zu aktivieren.'], 401);
             
         }
-        
+
+        //set user->last_login
+        $user->last_login = Carbon::now();
+        $user->save();
     
         return (new UserResource($request->user()))
         ->additional([
@@ -139,11 +142,9 @@ class AuthController extends Controller
 
     public function logout()
     {
-        // Set last login
-        $userID = auth()->user()->id;
-
-        $user = User::find($userID);
-        $user->last_login =  Carbon::now();
+        // Set last logout
+        $user = User::find(auth()->user()->id);
+        $user->last_logout = Carbon::now();
         $user->save();
 
         auth()->logout();

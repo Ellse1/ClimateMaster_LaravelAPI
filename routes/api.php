@@ -39,7 +39,7 @@ Route::post('/passwordReset', 'Auth\AuthController@setNewPassword');
 //USER
 Route::post('user/addProfilePicture', 'UserController@addProfilePicture');
 Route::post('user/getProfilePicture', 'UserController@getProfilePicture');
-Route::post('user/saveAddress', 'UserController@saveAddress');
+Route::post('user/saveAddressAndInstagram', 'UserController@saveAddressAndInstagram');
 Route::post('user/isCompanyAdmin', 'UserController@isCompanyAdmin');
 Route::post('user/getPictureForImagecreator', 'UserController@getPictureForImageCreator');
 Route::post('user/addPictureForImagecreator', 'UserController@addPictureForImageCreator');

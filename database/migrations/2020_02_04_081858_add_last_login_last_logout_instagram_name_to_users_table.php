@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLastLoginToUsersTable extends Migration
+class AddLastLoginLastLogoutInstagramNameToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,9 @@ class AddLastLoginToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('last_login')->nullable();
+            $table->timestamp('last_login')->nullable()->after('remember_token');
+            $table->timestamp('last_logout')->nullable()->after('last_login');
+            $table->string('instagram_name')->nullable()->after('residence');
         });
     }
 
@@ -27,6 +29,8 @@ class AddLastLoginToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('last_login');
+            $table->dropColumn('last_logout');
+            $table->dropColumn('instagram_name');
         });
     }
 }
