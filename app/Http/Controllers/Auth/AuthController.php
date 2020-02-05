@@ -112,7 +112,9 @@ class AuthController extends Controller
                 'state' => 'error',
                 'message' => 'Ihre Email wurde noch nicht verifiziert. 
                 Wir haben Ihnen eine Email mit einem Link zur Verifizierung gesendet. 
-                Folgen Sie diesem Link, um Ihr Konto zu aktivieren.'], 401);
+                Folgen Sie diesem Link, um Ihr Konto zu aktivieren.',
+                'verified' => false
+            ], 401);
             
         }
 
