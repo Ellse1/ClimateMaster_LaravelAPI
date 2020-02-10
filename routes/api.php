@@ -97,6 +97,8 @@ Route::post('climatemaster_steps_completed/customizeCalculationCompleted', 'Clim
 Route::get('paypal/payment', 'PaypalController@payment');
 Route::get('paypal/cancel', 'PaypalController@cancel')->name('paypal.cancel');
 Route::get('paypal/success', 'PaypalController@success')->name('paypal.success');
+Route::post('paypal/checkPayment', 'PaypalController@checkPayment');
+
 
 //PictureForImageCreator
 Route::post('picture_for_imagecreator/store', 'PictureForImagecreatorController@store');

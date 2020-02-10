@@ -16,6 +16,7 @@
         "intervention/image": "^2.5",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
+        "paypal/paypal-checkout-sdk": "^1.0",
         "srmklive/paypal": "^1.6",
         "tymon/jwt-auth": "1.0.*"
     },
