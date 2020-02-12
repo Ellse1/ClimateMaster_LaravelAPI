@@ -175,8 +175,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //Paypal
-        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
         // For Image Manipulation
         Intervention\Image\ImageServiceProvider::class
     ],
@@ -229,7 +227,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
         'Image' => Intervention\Image\Facades\Image::class
 
     ],
