@@ -208,20 +208,26 @@ class PictureForImagecreatorController extends Controller
         $picture_height = $picture->height();
 
         // ClimateMaster Text -> Background
-        $picture->rectangle(0, $picture_height-110, $picture_width, $picture_height-40, function ($draw) {
+        $picture->rectangle(0, $picture_height-140, $picture_width, $picture_height-40, function ($draw) {
             $draw->background('rgba(247, 247, 247, 0.3)');
         });
         //CLimateMaster Text -> Text
-        $picture->text('Climate', ($picture_width/2)-80, $picture_height-60, function($font) {
+        $picture->text('Climate', ($picture_width/2)-80, $picture_height-90, function($font) {
             $font->file(storage_path("app/files/for_image_creator/LiberationSerif-Bold.ttf"));
             $font->size(50);
             $font->color("#5cb85c");
             $font->align('right');
         });
-        $picture->text('Master 2020', ($picture_width/2)-80, $picture_height-60, function($font) {
+        $picture->text('Master 2020', ($picture_width/2)-80, $picture_height-90, function($font) {
             $font->file(storage_path("app/files/for_image_creator/LiberationSerif-Bold.ttf"));
             $font->size(50);
             $font->align('left');
+        });
+        //Umwerltfreundlich klimaneutral Text
+        $picture->text('Umweltfreundlich klimaneutral', ($picture_width/2)-80, $picture_height-60, function($font) {
+            $font->file(storage_path("app/files/for_image_creator/LiberationSerif-Bold.ttf"));
+            $font->size(20);
+            $font->align('center');
         });
 
         return response()->json([
