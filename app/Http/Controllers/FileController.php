@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class FileController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth.role:admin', ['except' => ['showConceptSummary']]);
+        // $this->middleware('auth.role:admin', ['except' => ['showConceptSummary', 'showConcept']]);
     }
 
     public function showConceptSummary(){
@@ -16,8 +16,8 @@ class FileController extends Controller
         return response()->file(storage_path("app/files/conceptSummary.pdf"));
     }
 
-    // public function showConcept(){
-    //     return response()->file(storage_path("app/files/concept.pdf"));
-    // }
+    public function showConcept(){
+        return response()->file(storage_path("app/files/concept.pdf"));
+    }
 
 }
