@@ -83,6 +83,8 @@ Route::post('companyslideshowimage/destroy', 'CompanySlideshowimageController@de
 Route::post('admin/getCompaniesToActivate', 'AdminController@getCompaniesToActivate');
 Route::post('admin/activateCompany', 'AdminController@activateCompany');
 Route::post('admin/deactivateCompany', 'AdminController@deactivateCompany');
+Route::post('admin/getAllUsers', 'AdminController@getAllUsers');
+
 
 //CO2Calculation
 Route::post('co2calculation/store', "CO2CalculationController@store");
