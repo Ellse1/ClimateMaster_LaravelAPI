@@ -84,6 +84,7 @@ Route::post('admin/getCompaniesToActivate', 'AdminController@getCompaniesToActiv
 Route::post('admin/activateCompany', 'AdminController@activateCompany');
 Route::post('admin/deactivateCompany', 'AdminController@deactivateCompany');
 Route::post('admin/getAllUsers', 'AdminController@getAllUsers');
+Route::post('admin/getLastCalculationOfUser', 'AdminController@getLastCalculationOfUser');
 
 
 //CO2Calculation
