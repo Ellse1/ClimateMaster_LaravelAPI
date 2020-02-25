@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -156,5 +157,49 @@ class UserController extends Controller
             ]);
         }
 
+    }
+
+    /**
+     * check if the user should see the gratulation for becoming ClimateMaster
+     */
+    public function checkShowGratulationBecomingClimateMaster(Request $request){
+        $user = User::find(auth()->user()->id);
+        $climatemaster = $user->climatemasters->where('year', Carbon::now()->year)->first();
+
+        if($climatemaster == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Für diesen User gibt es noch keinen ClimateMaster für das aktuelle Jahr'
+            ]);
+        }
+
+        //If he is not verified climatemaster
+        if($climatemaster->verified == false){
+            return response()->json([
+                'state' => 'success',
+                'message' => 'Der User wurde noch nicht als ClimateMaster für das aktuelle Jahr verifiziert.',
+                'show_gratulation' => false
+            ]);
+        }
+
+        $date_climatemaster_verified = $climatemaster->date_climatemaster_verified;
+        $last_login = $user->last_login;
+
+        //If he was verified as climatemaster, but didn't login since that -> show_gratulation!
+        //last_login lessThan (date_climatemaster_verified)
+        if($user->last_logout->lt($climatemaster->date_climatemaster_verified)){
+            return response()->json([
+                'state' => 'success',
+                'message' => 'Der User wurde als ClimateMaster für das aktuelle Jahr verifiziert, die Gratulation wurde noch nicht gesehen.',
+                'show_gratulation' => true
+            ]);
+        }
+
+        //If he did login since that -> don't show gratulation again
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Der User hat die Gratulation schon gesehen.',
+            'show_gratulation' => false
+        ]);
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Climatemaster extends Model
 {
 
+    protected $dates = ['date_climatemaster_verified'];
+
     //Returns the user of this Climatemaster
     public function user(){
         return $this->belongsTo(User::class);

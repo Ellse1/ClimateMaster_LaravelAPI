@@ -43,6 +43,7 @@ Route::post('user/saveAddressAndInstagram', 'UserController@saveAddressAndInstag
 Route::post('user/isCompanyAdmin', 'UserController@isCompanyAdmin');
 Route::post('user/getPictureForImagecreator', 'UserController@getPictureForImageCreator');
 Route::post('user/addPictureForImagecreator', 'UserController@addPictureForImageCreator');
+Route::post('user/checkShowGratulationBecomingClimateMaster', 'UserController@checkShowGratulationBecomingClimateMaster');
 
 
 //CLIMADVICE
@@ -85,7 +86,7 @@ Route::post('admin/activateCompany', 'AdminController@activateCompany');
 Route::post('admin/deactivateCompany', 'AdminController@deactivateCompany');
 Route::post('admin/getAllUsers', 'AdminController@getAllUsers');
 Route::post('admin/getLastCalculationOfUser', 'AdminController@getLastCalculationOfUser');
-
+Route::post('admin/setUserClimatemaster', 'AdminController@setUserClimatemaster');
 
 //CO2Calculation
 Route::post('co2calculation/store', "CO2CalculationController@store");

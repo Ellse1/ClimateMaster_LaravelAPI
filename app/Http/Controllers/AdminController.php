@@ -71,55 +71,14 @@ class AdminController extends Controller
     }
 
 
-    /*show all users*/
+    /*return all users*/
     public function getAllUsers(Request $request){
         return (UserResource::collection(User::all()))->additional([
             'state' => 'success', 
             'message' => 'Es wurde erfolgreich alle User zurückgegeben.'
         ]);
     }
-    /**
-     * Set one user as climatemaster for this year (If someone paid not with paypal, but direct to ISBN or direct to atmosfair)
-     * Send gratulation link to this person
-     */
-    public function setUserClimatemaster(Request $request){
         
-        $validator = Validator::make($request->all(),[
-            'id' => 'required|integer|exists:users,id' //User to set as 'climatemaster' => true
-        ]);
-        if($validator->fails()){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Dieser User konnte nicht gefunden werden'
-            ]);
-        }
-
-        //get User
-        $userToMakeClimatemaster = User::find($request->id);
-
-        $steps_completed = $userToMakeClimatemaster->climatemaster_steps_completed()->where('year', Carbon::now()->year)->first();
-
-        //If anything is wrong
-        if(!($steps_completed->calculate && $steps_completed->reduce_short_term && $steps_completed->customize_calculation && $steps_completed->become_climatemaster == false)){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'This User did not all the neccesary Steps to become Climatemaster or this Person is already Climatemaster!'
-            ]);
-        }
-
-        //If everything is as expected (the user did the first 3 steps but not the step "become_climatemaster"
-        $steps_completed->become_climatemaster = true;
-        $steps_completed->save();
-
-        //send Mail to the user -> congratulation
-        Mail::to($userToMakeClimatemaster->email)->send(new congratulationBecomeClimatemaster($userToMakeClimatemaster));
-
-        return response()->json([
-            'state' => 'success',
-            'message' => 'Der User wurde erfolgreich zum ClimateMaster für dieses Jahr gemacht. Außerdem wurde Ihm eine Mail mit dem Gratulationslink geschickt.'
-        ]);
-    }
-
     /**
      * Get the latest calculaton of a user -> to make sure if he paid enough to become climatemaster
      */
@@ -157,6 +116,57 @@ class AdminController extends Controller
             'message' => 'Die Daten der CO2 Berechnung wurden erfolgreich zurück gegeben'
         ]);
     }
+
+    /**
+     * Set one user as climatemaster for this year (If someone paid not with paypal, but direct to ISBN or direct to atmosfair)
+     * Send gratulation link to this person
+     */
+    public function setUserClimatemaster(Request $request){
+        
+        $validator = Validator::make($request->all(),[
+            'user_id' => 'required|integer|exists:users,id' //User to set as 'climatemaster' => true
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser User konnte nicht gefunden werden'
+            ]);
+        }
+
+        //get User
+        $userToMakeClimatemaster = User::find($request->user_id);
+
+        $steps_completed = $userToMakeClimatemaster->climatemaster_steps_completed()->where('year', Carbon::now()->year)->first();
+
+        //If anything is wrong
+        if(!($steps_completed->calculate && $steps_completed->reduce_short_term && $steps_completed->customize_calculation && $steps_completed->become_climatemaster == false)){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzer hat nicht alle nötigen Schritte abgeschlossen bzw. ist schon ClimateMaster geworden.'
+            ]);
+        }
+
+        //If everything is as expected (the user did the first 3 steps but not the step "become_climatemaster"
+        $steps_completed->become_climatemaster = true;
+        $steps_completed->save();
+
+        //Save in the 'climatemaster' model of this year, that process is now completed and verified
+        $climatemaster = $userToMakeClimatemaster->climatemasters()->where('year', Carbon::now())->first();
+        $climatemaster->process_completed = true;
+        $climatemaster->verified = true;
+        $climatemaster->date_climatemaster_verified = Carbon::now();
+        $climatemaster->save();
+
+        //send Mail to the user -> congratulation
+        Mail::to($userToMakeClimatemaster->email)->send(new congratulationBecomeClimatemaster($userToMakeClimatemaster));
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Der User wurde erfolgreich zum ClimateMaster für dieses Jahr gemacht. Außerdem wurde Ihm eine Mail mit dem Gratulationslink geschickt.'
+        ]);
+    }
+
+
 
 
 }
