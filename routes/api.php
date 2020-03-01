@@ -87,6 +87,9 @@ Route::post('admin/deactivateCompany', 'AdminController@deactivateCompany');
 Route::post('admin/getAllUsers', 'AdminController@getAllUsers');
 Route::post('admin/getLastCalculationOfUser', 'AdminController@getLastCalculationOfUser');
 Route::post('admin/setUserClimatemaster', 'AdminController@setUserClimatemaster');
+Route::post('admin/getAllImagesForPublication', 'AdminController@getAllImagesForPublication');
+Route::post('admin/downloadPictureFromImagecreator', 'AdminController@downloadPictureFromImagecreator');
+
 
 //CO2Calculation
 Route::post('co2calculation/store', "CO2CalculationController@store");

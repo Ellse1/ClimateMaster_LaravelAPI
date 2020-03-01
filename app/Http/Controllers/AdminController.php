@@ -6,13 +6,18 @@ use App\Climatemaster;
 use App\Company;
 use App\Http\Resources\CO2CalculationResource;
 use App\Http\Resources\CompanyResource;
+use App\Http\Resources\PictureForImagecreatorResource;
 use App\Http\Resources\UserResource;
 use App\Mail\congratulationBecomeClimatemaster;
+use App\Picture_for_imagecreator;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
+
 
 class AdminController extends Controller
 {
@@ -164,6 +169,94 @@ class AdminController extends Controller
             'state' => 'success',
             'message' => 'Der User wurde erfolgreich zum ClimateMaster für dieses Jahr gemacht. Außerdem wurde Ihm eine Mail mit dem Gratulationslink geschickt.'
         ]);
+    }
+
+
+
+
+    /**
+     * Get all Images for Imagecreator -> all images for imagecreator with "public" = true
+     */
+    public function getAllImagesForPublication(Request $request){
+        $imagesForImagecreator = Picture_for_imagecreator::where('sharing_permitted', true)->get();
+        return (PictureForImagecreatorResource::collection($imagesForImagecreator))->additional([
+            'state' => 'success',
+            'message' => 'Es wurden alle Bilder zurückgegeben, bei denen Teilen erlaubt ist.'
+        ]);
+    }
+    /**
+     * Get the image to download
+     */
+    public function downloadPictureFromImagecreator(Request $request){
+        $validator = Validator::make($request->all(), [
+            'picture_for_imagecreator_id' => 'required|integer|exists:pictures_for_imagecreator,id'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es wurden nicht die richtigen Paramenter mit gegeben. picture_for_imagecreator_id existiert nicht oder hat das falsche Format.' 
+            ]);
+        }
+
+
+        $ImageFromDB = Picture_for_imagecreator::find($request->picture_for_imagecreator_id);
+
+        if($ImageFromDB->sharing_permitted != true){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Das Teilen dieses Bildes ist nicht erlaubt. sharing_permitted != true!' 
+            ]);
+        }
+        
+        if(Storage::exists("/images/pictures_for_imagecreator/" . $ImageFromDB->picture_name) == false){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Das Bild wurde nicht gefunden.'
+            ]);
+        }
+        $picture = Image::make(Storage::get("/images/pictures_for_imagecreator/" . $ImageFromDB->picture_name));
+
+        // Logo
+        $logo = Image::make(Storage::get("/files/for_image_creator/LogoTransparent.png"));
+        $logo->resize(200, 200);
+        $picture->insert($logo);
+
+        
+        //Set the right position for the climatemaster text
+        $picture_width = $picture->width();
+        $picture_height = $picture->height();
+
+        // ClimateMaster Text -> Background
+        $picture->rectangle(0, $picture_height-140, $picture_width, $picture_height-40, function ($draw) {
+            $draw->background('rgba(247, 247, 247, 0.3)');
+        });
+        //CLimateMaster Text -> Text
+        $picture->text('Climate', ($picture_width/2)-80, $picture_height-90, function($font) {
+            $font->file(storage_path("app/files/for_image_creator/LiberationSerif-Bold.ttf"));
+            $font->size(50);
+            $font->color("#5cb85c");
+            $font->align('right');
+        });
+        $picture->text('Master 2020', ($picture_width/2)-80, $picture_height-90, function($font) {
+            $font->file(storage_path("app/files/for_image_creator/LiberationSerif-Bold.ttf"));
+            $font->size(50);
+            $font->align('left');
+        });
+        //Umwerltfreundlich klimaneutral Text
+        $picture->text('Umweltfreundlich klimaneutral', ($picture_width/2)-80, $picture_height-60, function($font) {
+            $font->file(storage_path("app/files/for_image_creator/LiberationSerif-Bold.ttf"));
+            $font->size(20);
+            $font->align('center');
+        });
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Das Bild wurde erfolgreich generiert.',
+            'picture_base64' => base64_encode($picture->encode()->encoded)
+        ]);
+
+
+
     }
 
 
