@@ -43,17 +43,21 @@ class CO2CalculationController extends Controller
             ]);
         }
 
-        //Check if in his year, climatemaster_steps_completed->customize_calculation is not already finished!   If finished, user is not allowed to change again!
         $user = User::find(auth()->user()->id);
         $climatemaster_steps_completed = $user->climatemaster_steps_completed->where('year', Carbon::now()->year)->first();
-        if($climatemaster_steps_completed != null){
-            if($climatemaster_steps_completed->customize_calculation == true){
-                return response()->json([
-                    'state' => 'error',
-                    'message' => 'Der Schritt "Berechnung anpassen" wurde schon erfolgreich abgeschlossen. Für dieses Jahr, kann die Berechnung nicht mehr aktualisiert werden.'
-                ]); 
-            }
-        }
+        
+        //Now the person is allowed to change the calculation, even if he finished step3 (customize calculation) already
+        //Check if in his year, climatemaster_steps_completed->customize_calculation is not already finished!   If finished, user is not allowed to change again!
+        // if($climatemaster_steps_completed != null){
+        //     if($climatemaster_steps_completed->customize_calculation == true){
+        //         return response()->json([
+        //             'state' => 'error',
+        //             'message' => 'Der Schritt "Berechnung anpassen" wurde schon erfolgreich abgeschlossen. Für dieses Jahr, kann die Berechnung nicht mehr aktualisiert werden.'
+        //         ]);
+        //     }
+        // }
+
+
         $ubaRequest = new Client();
         $ubaResponse = $ubaRequest->get($request->link_uba_co2calculation);
         $body = $ubaResponse->getBody();
