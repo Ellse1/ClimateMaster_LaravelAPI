@@ -47,6 +47,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Picture_for_imagecreator::class);
     }
 
+    //Returns the public user profile of this user
+    public function public_user_profile(){
+        return $this->hasOne(PublicUserProfile::class);
+    }
 
     use Notifiable;
 

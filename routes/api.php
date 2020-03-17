@@ -3,6 +3,7 @@
 use App\BlogPost;
 use App\Handlungsvorschlag;
 use App\Http\Controllers\ClimadviceController;
+use App\Http\Controllers\UserController;
 use App\Http\Resources\HandlungsvorschlagResource;
 use App\Http\Resources\UserResource;
 
@@ -44,7 +45,7 @@ Route::post('user/isCompanyAdmin', 'UserController@isCompanyAdmin');
 Route::post('user/getPictureForImagecreator', 'UserController@getPictureForImageCreator');
 Route::post('user/addPictureForImagecreator', 'UserController@addPictureForImageCreator');
 Route::post('user/checkShowGratulationBecomingClimateMaster', 'UserController@checkShowGratulationBecomingClimateMaster');
-
+Route::post('user/getDataToShowPublicUserProfile', 'UserController@getDataToShowPublicUserProfile');
 
 //CLIMADVICE
 Route::post('climadvice/store', 'ClimadviceController@store');
@@ -94,6 +95,7 @@ Route::post('admin/downloadPictureFromImagecreator', 'AdminController@downloadPi
 //CO2Calculation
 Route::post('co2calculation/store', "CO2CalculationController@store");
 Route::post('co2calculation/getLatestCalculation', 'CO2CalculationController@getLatestCalculation');
+Route::post('co2calculation/getLatestCalculationForPublicProfileByUsername', 'CO2CalculationController@getLatestCalculationForPublicProfileByUsername');
 
 //Climatemaster_steps_completed
 Route::post('climatemaster_steps_completed/getCurrentClimatemaster_steps_completed', 'Climatemaster_steps_completedController@getCurrentClimatemaster_steps_completed');
@@ -113,3 +115,9 @@ Route::post('picture_for_imagecreator/getPicturesOfCurrentUser', 'PictureForImag
 Route::post('picture_for_imagecreator/destroy', 'PictureForImagecreatorController@destroy');
 Route::post('picture_for_imagecreator/download', 'PictureForImagecreatorController@download');
 Route::post('picture_for_imagecreator/updateSharingPermitted', 'PictureForImagecreatorController@updateSharingPermitted');
+
+
+//PublicUserProfile
+Route::post('publicUserProfile/getPublicUserProfile', 'PublicUserProfileController@getPublicUserProfile');
+Route::post('publicUserProfile/changePublic', 'PublicUserProfileController@changePublic');
+Route::post('publicUserProfile/update', 'PublicUserProfileController@update');

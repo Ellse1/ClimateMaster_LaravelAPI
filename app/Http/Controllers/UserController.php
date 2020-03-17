@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\PublicUserProfile;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:user,admin', ['except' => ['isCompanyAdmin']]);
+        $this->middleware('auth.role:user,admin', ['except' => ['isCompanyAdmin', 'getDataToShowPublicUserProfile']]);
     }
 
 
@@ -201,5 +203,89 @@ class UserController extends Controller
             'message' => 'Der User hat die Gratulation schon gesehen.',
             'show_gratulation' => false
         ]);
+    }
+
+
+
+
+
+    //returns a datapackage with all the necessary data, to present one user
+    public function getDataToShowPublicUserProfile(Request $request){
+        
+        //Check if username exists
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|exists:users,username'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzername existiert nicht.'
+            ]);
+        }
+
+        //check if user has a public publicUserProfile
+        $userToShow = User::where('username', $request->username)->first();
+        $publicUserProfile = $userToShow->public_user_profile;
+        if($publicUserProfile == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzer hat kein öffentliches Profil'
+            ]);
+        }
+        if($publicUserProfile->public == false){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzer hat sein Profil nicht veröffentlicht.'
+            ]);
+        }
+
+        //If everything is fine
+        $dataToReturn = new stdClass();
+
+        //set publicUserProfile
+        $dataToReturn->public_user_profile = $publicUserProfile;
+
+        //set profilePicture base 64
+        if($userToShow->profile_picture_name != null){
+            $filename = $userToShow->profile_picture_name;
+            if($filename != null){
+                if(Storage::exists("/images/profilePictures/" . $filename)){
+                    $image = Storage::get("/images/profilePictures/" . $filename);
+                    $dataToReturn->profile_picture_base64 = base64_encode($image); 
+                }
+            }
+        }
+
+        //get latest co2calculation of current year of this user (with the given username)
+        $climatemaster = $userToShow->climatemasters->where('year', Carbon::now()->year)->first();
+        if($climatemaster != null){
+            $co2Calculation = $climatemaster->co2calculations()->latest()->first();
+        }
+
+        //set climatemaster_status (climatemaster / climatemaster_starter / none)
+        //climatemaster_starter -> if calculation->total_emissions <= 9.00 (9 Tonns CO2 eqivalent)
+        $climatemaster_state = "none";
+        if($climatemaster != null){
+            if($climatemaster->verified == true){
+                $climatemaster_state = "climatemaster";
+            }
+            //if not climatemaster but has co2 calculation
+            else if($co2Calculation != null){
+                if($co2Calculation->total_emissions <= 9.00){
+                    $climatemaster_state = "climatemaster_starter";
+                }
+            }
+        }
+        $dataToReturn->climatemaster_state = $climatemaster_state;
+
+        
+        return response()->json([
+            'public_user_profile' => $dataToReturn->public_user_profile,
+            'climatemaster_state' => $dataToReturn->climatemaster_state,
+            'profile_picture_base64' => $dataToReturn->profile_picture_base64,
+            'state' => 'success',
+            'message' => 'Die Daten wurden erfolgreich zusammengestellt und zurück gegeben.'
+        ]);
+        
     }
 }

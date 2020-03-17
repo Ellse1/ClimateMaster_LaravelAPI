@@ -18,7 +18,7 @@ class CO2CalculationController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('auth.role:user,admin');
+        $this->middleware('auth.role:user,admin', ['except' => ['getLatestCalculationForPublicProfileByUsername']]);
     }
 
     
@@ -143,11 +143,77 @@ class CO2CalculationController extends Controller
             ]);
         }
 
+        //Check if user is climate master -> for co2 calculation chart -> if the person is climatemaster, show the kompensation too
+        $userIsClimateMaster = $climatemaster->verified;
+
+
         return (new CO2CalculationResource($co2Calculation))->additional([
             'state' => 'success',
-            'message' => 'Die Daten der CO2 Berechnung wurden erfolgreich zurück gegeben'
+            'message' => 'Die Daten der CO2 Berechnung wurden erfolgreich zurück gegeben',
+            'isCompensated' => $userIsClimateMaster
         ]);
 
+    }
+
+    /**
+     * Get the latestCalculation if public profile is enabled by this user
+     */
+    public function getLatestCalculationForPublicProfileByUsername(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|exists:users,username'
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es wurde kein valider Benutzername angegeben.'
+            ]);
+        }
+        
+        $user = User::where('username', $request->username)->first();
+
+        //check if user has a public profile and if public is enabled
+        $publicProfile = $user->public_user_profile;
+        if($publicProfile == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzer hat kein öffentliches Profil.'
+            ]);            
+        }
+        else if($publicProfile->public == false){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzer hat sein Profil auf Privat geschalten.'
+            ]);             
+        }
+
+        $climatemaster = $user->climatemasters()->where('year', Carbon::now()->year)->first();
+
+        if($climatemaster == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es gibt noch keine Berechnungen für das aktuelle Jahr.'
+            ]);
+        }
+
+        $co2Calculation = $climatemaster->co2calculations()->latest()->first();
+
+        if($co2Calculation == null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es gibt noch keine CO2 Berechnung für dieses Jahr'
+            ]);
+        }
+
+        //Check if user is climate master -> for co2 calculation chart -> if the person is climatemaster, show the kompensation too
+        $userIsClimateMaster = $climatemaster->verified;
+
+
+        return (new CO2CalculationResource($co2Calculation))->additional([
+            'state' => 'success',
+            'message' => 'Die Daten der CO2 Berechnung wurden erfolgreich zurück gegeben',
+            'isCompensated' => $userIsClimateMaster
+        ]);
     }
 
 }
