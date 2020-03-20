@@ -127,6 +127,9 @@ class CO2CalculationController extends Controller
 
     }
 
+    /**
+     * Return latest Calculation of current user
+     */
     public function getLatestCalculation(Request $request){
         $user = User::find(auth()->user()->id);
         $climatemaster = $user->climatemasters()->where('year', Carbon::now()->year)->first();
@@ -149,7 +152,6 @@ class CO2CalculationController extends Controller
 
         //Check if user is climate master -> for co2 calculation chart -> if the person is climatemaster, show the kompensation too
         $userIsClimateMaster = $climatemaster->verified;
-
 
         return (new CO2CalculationResource($co2Calculation))->additional([
             'state' => 'success',
@@ -209,7 +211,7 @@ class CO2CalculationController extends Controller
             ]);
         }
 
-        //Check if user is climate master -> for co2 calculation chart -> if the person is climatemaster, show the kompensation too
+        //Check if user is climate master -> for co2 calculation chart -> if the person is climatemaster, show the compensation too
         $userIsClimateMaster = $climatemaster->verified;
 
 
