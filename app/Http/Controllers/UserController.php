@@ -246,7 +246,7 @@ class UserController extends Controller
         $dataToReturn->public_user_profile = $publicUserProfile;
 
         //set profilePicture base 64
-        $dataToReturn->profile_picture_base64 = null; 
+        $dataToReturn->profile_picture_base64 = null;
         if($userToShow->profile_picture_name != null){
             $filename = $userToShow->profile_picture_name;
             if($filename != null){

@@ -3,17 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PublicUserProfileResource;
+use App\Http\Resources\UserForPublicUserProfileList;
 use App\PublicUserProfile;
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 
 class PublicUserProfileController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:user,admin');
+        $this->middleware('auth.role:user,admin', ['except' => ['getAllWithCalculationAndProfilePicture']]);
     }
+
+    /**
+     * Returns all public profiles (public = true), to show in slideshow
+     * Required: ProfilePicture, at least 1 CO2Calculation, ClimateMasterStatement
+     */
+    public function getAllWithCalculationAndProfilePicture(Request $request){
+
+        // Get all public profiles
+        // $publicUserProfiles = PublicUserProfile::where('public', true)->with('user')->get();
+
+        $users = User::where('profile_picture_name', '!=', null)
+            ->has('climatemasters')
+            ->whereHas('public_user_profile', function (Builder $query) {
+                 $query->where('public', true);
+            })
+            ->with('public_user_profile')
+            ->get();        
+        
+        return (UserForPublicUserProfileList::collection($users))->additional([
+            'state' => 'success',
+            'message' => 'Es wurden alle Öffentliche Profile zurückgegeben, die auf öffentlich geschaltet wurden, mindestens eine Berechnung haben und ein Profilbild haben.'
+        ]);
+
+    }
+
+
 
 
     /**
@@ -67,8 +98,6 @@ class PublicUserProfileController extends Controller
             'message' => 'Die Sichtbarkeit des öffentlichen Profils wurde erfolgreich geändert.'
         ]);
     }
-
-
 
 
     /**

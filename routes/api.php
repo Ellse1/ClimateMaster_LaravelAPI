@@ -121,3 +121,4 @@ Route::post('picture_for_imagecreator/updateSharingPermitted', 'PictureForImagec
 Route::post('publicUserProfile/getPublicUserProfile', 'PublicUserProfileController@getPublicUserProfile');
 Route::post('publicUserProfile/changePublic', 'PublicUserProfileController@changePublic');
 Route::post('publicUserProfile/update', 'PublicUserProfileController@update');
+Route::post('publicUserProfile/getAllWithCalculationAndProfilePicture', 'PublicUserProfileController@getAllWithCalculationAndProfilePicture');
