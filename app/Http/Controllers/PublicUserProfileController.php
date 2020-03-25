@@ -93,10 +93,19 @@ class PublicUserProfileController extends Controller
         $publicUserProfile->public = $request->public;
         $publicUserProfile->save();
 
+        if($request->public){
+            return (new PublicUserProfileResource($publicUserProfile))->additional([
+                'state' => 'success',
+                'message' => 'Das Profil ist jetzt öffentlich.'
+            ]);
+        }
+
         return (new PublicUserProfileResource($publicUserProfile))->additional([
             'state' => 'success',
-            'message' => 'Die Sichtbarkeit des öffentlichen Profils wurde erfolgreich geändert.'
+            'message' => 'Das Profil ist jetzt privat.'
         ]);
+
+
     }
 
 
