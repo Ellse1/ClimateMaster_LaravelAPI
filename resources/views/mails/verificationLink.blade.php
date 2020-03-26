@@ -6,14 +6,14 @@
             <h5 style="text-align: right;">Klimaschutz jetzt</h5>
             <p class="headline">E-Mail Verifizierung bei <span style="color:green">Climate</span>Master</p>
             <p>
-            Sie haben einen neuen Verifizierungslink angefordert, um Ihre E-Mail zu bestätigen. 
-            Folgen Sie dem unten stehenden Button, um Ihr Klimaschutz Konto zu aktivieren.
+            Du hast einen neuen Verifizierungslink angefordert, um deine E-Mail zu bestätigen. 
+            Folge dem unten stehenden Button, um dein Klimaschutz Konto zu aktivieren.
             </p>
             <p style="text-align: center;margin:auto;margin-top:20px;margin-bottom:20px;">
                 <a style="text-align:center;margin:auto;border-color:green;border-radius:10px;border-style:solid;padding:10px;" href="https://www.climate-master.com/account/verification?userID={{$user->id}}&verificationCode={{$verificationCode}}">Klimaschutzkonto Aktivieren</a>
             </p>
 
-            <p style="text-align: center;">Vielen Dank für die Aktivierung ihres ClimateMaster Kontos.</p>
+            <p style="text-align: center;">Vielen Dank für die Aktivierung deines ClimateMaster Kontos.</p>
         </div>
     </div>
 <style>

@@ -6,16 +6,16 @@
             <h5 style="text-align: right;">Klimaschutz jetzt</h5>
             <p class="headline">Passwortreset bei <span style="color:green">Climate</span>Master</p>
             <p>
-            Sehr geehrter Herr {{$user->lastname}},<br>
-            Haben Sie vor kurzer Zeit versucht sich bei ClimateMaster einzuloggen aber ihr Passwort vergessen und wollen dieses nun ändern?
-            Mit folgendem Link können Sie ihr Passwort zurücksetzen.
+            Lieber {{$user->firstname}},<br>
+            Hast du vor kurzer Zeit versucht dich bei ClimateMaster einzuloggen aber dein Passwort vergessen und willst dieses nun ändern?
+            Mit folgendem Link kannst du dein Passwort zurücksetzen.
             </p>
             <p style="text-align: center;margin:auto;margin-top:20px;margin-bottom:20px;">
                 <a style="text-align:center;margin:auto;border-color:green;border-radius:10px;border-style:solid;padding:10px;"  href="https://www.climate-master.com/account/passwordresetcodevalidation?userID={{$user->id}}&password_reset_code={{$password_reset_code}}">Passwort zurücksetzen</a>
             </p>
 
             <p style="text-align:center;">
-                Falls Sie Ihr Passwort nicht zurücksetzen wollen und dies auch nicht versucht haben, sollten Sie aus Sicherheitsgründen ihr Passwort ändern.
+                Falls du dein Passwort nicht zurücksetzen willst und dies auch nicht versucht hast, solltest du aus Sicherheitsgründen dein Passwort ändern.
             </p>
         </div>
     </div>
