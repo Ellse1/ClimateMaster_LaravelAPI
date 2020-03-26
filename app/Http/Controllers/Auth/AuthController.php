@@ -46,7 +46,7 @@ class AuthController extends Controller
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'username' => $request->username,
+            'username' =>  preg_replace('/\s/', '', $request->username), //delete Whitespace
             'email'    => $request->email,
             'password' => $request->password,
             'role' => 'user',
