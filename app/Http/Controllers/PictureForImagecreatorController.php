@@ -23,7 +23,7 @@ class PictureForImagecreatorController extends Controller
     /**
      * Stores an picture_for_imagecreator for the current user
      */
-    public function store(Request $request){
+    public function storePictureForImageCreator_ByCurrentUser(Request $request){
         $validator = Validator::make($request->all(), [
             'picture_for_imagecreator' => 'required|image|mimes:jpeg,jpg,png|max:2048'
         ]);
@@ -77,7 +77,7 @@ class PictureForImagecreatorController extends Controller
     /**
      * Return all pictures of the current User
      */
-    public function getPicturesOfCurrentUser(Request $request){
+    public function getPicturesForImagecreator_ByCurrentUser(Request $request){
 
         //If not climatemaster -> don't get the climatemaster images
         $this->checkIfUserIsClimatemaster();
@@ -125,7 +125,7 @@ class PictureForImagecreatorController extends Controller
         ]);
     }
 
-    public function destroy(Request $request){
+    public function destroyPictureForImagecreator_ByPictureForImagecreatorID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:pictures_for_imagecreator,id'
         ]);
@@ -164,7 +164,7 @@ class PictureForImagecreatorController extends Controller
     /**
      * Creates a nice Picture for the user and sends it back, so the user can download it
      */
-    public function download(Request $request){
+    public function download_ByPictureForImagecreatorID(Request $request){
         $validator = Validator::make($request->all(),[
             'id' => 'required|integer|exists:pictures_for_imagecreator,id'
         ]);
@@ -242,7 +242,7 @@ class PictureForImagecreatorController extends Controller
     /**
      * 
      */
-    public function updateSharingPermitted(Request $request){
+    public function updateSharingPermitted_ByPictureForImagecreatorID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:pictures_for_imagecreator,id',
             'sharing_permitted' => 'required|boolean'

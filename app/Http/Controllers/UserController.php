@@ -15,14 +15,14 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:user,admin', ['except' => ['isCompanyAdmin', 'getDataToShowPublicUserProfile']]);
+        $this->middleware('auth.role:user,admin', ['except' => ['isCompanyAdmin_ByCurrentUser', 'getDataToShowPublicUserProfile']]);
     }
 
 
     /**
      * Add profilePicture to user
      */
-    public function addProfilePicture(Request $request){
+    public function addProfilePicture_ByCurrentUser(Request $request){
         
         $validator = Validator::make($request->all(), [
             'profilePicture' => 'required|image|mimes:jpeg,jpg,png|max:2048'
@@ -54,7 +54,7 @@ class UserController extends Controller
         
     }
 
-    public function getProfilePicture(Request $request){
+    public function getProfilePicture_ByCurrentUser(Request $request){
         $user = auth()->user();
         $filename = $user->profile_picture_name;
         if($filename != null){
@@ -80,7 +80,7 @@ class UserController extends Controller
         }
     }
 
-    public function saveAddressAndInstagram(Request $request){
+    public function saveAddressAndInstagram_ByCurrentUser(Request $request){
         $user = auth()->user();
 
         if($request->street != "undefined"){
@@ -129,7 +129,7 @@ class UserController extends Controller
      * 
      * @params -> company_id
      */
-    public function isCompanyAdmin(Request $request){
+    public function isCompanyAdmin_ByCurrentUser(Request $request){
         $validator = Validator::make($request->all(), [
             'company_id' => 'required|integer|exists:companies,id'
         ]);
@@ -164,7 +164,7 @@ class UserController extends Controller
     /**
      * check if the user should see the gratulation for becoming ClimateMaster
      */
-    public function checkShowGratulationBecomingClimateMaster(Request $request){
+    public function checkShowGratulationBecomingClimateMaster_ByCurrentUser(Request $request){
         $user = User::find(auth()->user()->id);
         $climatemaster = $user->climatemasters->where('year', Carbon::now()->year)->first();
 

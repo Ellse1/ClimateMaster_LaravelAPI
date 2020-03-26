@@ -50,7 +50,7 @@ class PublicUserProfileController extends Controller
     /**
      * Return the public Profile of the current user
      */
-    public function getPublicUserProfile(Request $request){
+    public function getPublicUserProfile_ByCurrentUser(Request $request){
         $user = User::find(auth()->user()->id);
 
         $publicUserProfile = $user->public_user_profile;
@@ -70,7 +70,7 @@ class PublicUserProfileController extends Controller
     }
 
     //Change the value of 'public'. If there is no PublicUserProfile in Database until now -> create one
-    public function changePublic(Request $request){
+    public function changePublic_ByCurrentUser(Request $request){
         $validator = Validator::make($request->all(), [
             'public' => 'required|boolean'
         ]);
@@ -112,7 +112,7 @@ class PublicUserProfileController extends Controller
     /**
      * Updates the information for the publicUserProfile
      */
-    public function update(Request $request){
+    public function updatePublicUserProfile_ByCurrentUser(Request $request){
         $user = User::find(auth()->user()->id);
         $publicUserProfile = $user->public_user_profile;
 

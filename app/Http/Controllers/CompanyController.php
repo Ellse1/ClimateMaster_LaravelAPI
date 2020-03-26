@@ -13,14 +13,14 @@ class CompanyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:admin,user', ['except' => ['getCompany', 'getCompanies', 'getActivatedCompaniesByClimadviceName']]);
+        $this->middleware('auth.role:admin,user', ['except' => ['getCompany_ByCompanyID', 'getAllCompanies', 'getActivatedCompanies_ByClimadviceName']]);
     }
 
         
     /**
      * Return one Company by id
      */
-    public function getCompany(Request $request){
+    public function getCompany_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer'
         ]);
@@ -46,7 +46,7 @@ class CompanyController extends Controller
     /**
      * Gets all companies
      */
-    public function getCompanies(){
+    public function getAllCompanies(){
         return (CompanyResource::collection(Company::all()))->additional([
             'state' => 'success',
             'message' => 'Es wurden alle Firmen zurückgegeben'
@@ -56,7 +56,7 @@ class CompanyController extends Controller
     /**
      * Return multiple companies depending on climadvice_name
      */
-    public function getActivatedCompaniesByClimadviceName(Request $request){
+    public function getActivatedCompanies_ByClimadviceName(Request $request){
         $validator = Validator::make($request->all(), [
             'climadvice_name' => 'required|exists:climadvices,name'
         ]);
@@ -82,7 +82,7 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return error message (json) or company data with state=success
      */
-    public function store(Request $request){
+    public function storeCompany(Request $request){
         
         $validator = Validator::make($request->all(),[
             'climadvice_name' => 'required|exists:climadvices,name', //Company belongs to a special climadvice
@@ -131,7 +131,7 @@ class CompanyController extends Controller
     /**
      * Updates the company data, if the current user has the right
      */
-    public function update(Request $request){
+    public function updateCompany_ByCompanyID(Request $request){
 
         //Check if ok -> has id?
         $validator = Validator::make($request->all(),[
@@ -175,7 +175,7 @@ class CompanyController extends Controller
     /**
      * Stores the banner for a company, if current user is allowed to
      */
-    public function storeHeaderImage(Request $request){
+    public function storeHeaderImage_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:companies,id',
             'header_image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
@@ -206,7 +206,7 @@ class CompanyController extends Controller
     /**
      * Stores the Logo of a company, if current user is allowed to
      */
-    public function storeLogoImage(Request $request){
+    public function storeLogoImage_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:companies,id',
             'logo_image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
@@ -239,7 +239,7 @@ class CompanyController extends Controller
      * 
      * @param: company id
      */
-    public function getAdminsOfCompany(Request $request){
+    public function getAdminsOfCompany_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:companies,id'
         ]);
@@ -263,7 +263,7 @@ class CompanyController extends Controller
      * Adds a admin to company
      * @param: user email, company id
      */
-    public function addAdmin(Request $request){
+    public function addAdmin_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:companies,id',
             'email' => 'required|email|exists:users,email'
@@ -301,7 +301,7 @@ class CompanyController extends Controller
      * Removes admin from company 
      * @param: company id, user id
      */
-    public function removeAdmin(Request $request){
+    public function removeAdmin_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:companies,id',
             'user_id' => 'required|integer|exists:users,id'

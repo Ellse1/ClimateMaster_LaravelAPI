@@ -18,11 +18,11 @@ class CO2CalculationController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('auth.role:user,admin', ['except' => ['getLatestCalculationForPublicProfileByUsername']]);
+        $this->middleware('auth.role:user,admin', ['except' => ['getLatestCO2CalculationForPublicProfileByUsername']]);
     }
 
     
-    public function store(Request $request){
+    public function storeCO2Calculation_ByCurrentUser(Request $request){
         $validator = Validator::make($request->all(),[
             'link_uba_co2calculation' => 'required|string' //|unique:co2calculations,link_uba_co2calculation
         ]);
@@ -130,7 +130,7 @@ class CO2CalculationController extends Controller
     /**
      * Return latest Calculation of current user
      */
-    public function getLatestCalculation(Request $request){
+    public function getLatestCO2Calculation_ByCurrentUser(Request $request){
         $user = User::find(auth()->user()->id);
         $climatemaster = $user->climatemasters()->where('year', Carbon::now()->year)->first();
 
@@ -164,7 +164,7 @@ class CO2CalculationController extends Controller
     /**
      * Get the latestCalculation if public profile is enabled by this user
      */
-    public function getLatestCalculationForPublicProfileByUsername(Request $request){
+    public function getLatestCO2CalculationForPublicProfileByUsername(Request $request){
         
         $validator = Validator::make($request->all(), [
             'username' => 'required|exists:users,username'

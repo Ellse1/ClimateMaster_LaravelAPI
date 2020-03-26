@@ -34,7 +34,7 @@ class AdminController extends Controller
                 'message' => 'Es wurde alle Firmen zur verifizierung zurückgegeben.'
             ]);
     }
-    public function activateCompany(Request $request){
+    public function activateCompany_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(),[
             'company_id' => 'required|integer|exists:companies,id'
         ]);
@@ -54,7 +54,7 @@ class AdminController extends Controller
             'message' => 'Die Firma wurde erfolgreich aktiviert.'
         ]);
     }
-    public function deactivateCompany(Request $request){
+    public function deactivateCompany_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(),[
             'company_id' => 'required|integer|exists:companies,id'
         ]);
@@ -87,7 +87,7 @@ class AdminController extends Controller
     /**
      * Get the latest calculaton of a user -> to make sure if he paid enough to become climatemaster
      */
-    public function getLastCalculationOfUser(Request $request){
+    public function getLastCO2CalculationOfUser_ByUserID(Request $request){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer|exists:users,id'
         ]);
@@ -126,7 +126,7 @@ class AdminController extends Controller
      * Set one user as climatemaster for this year (If someone paid not with paypal, but direct to ISBN or direct to atmosfair)
      * Send gratulation link to this person
      */
-    public function setUserClimatemaster(Request $request){
+    public function setUserClimatemaster_ByUserID(Request $request){
         
         $validator = Validator::make($request->all(),[
             'user_id' => 'required|integer|exists:users,id' //User to set as 'climatemaster' => true
@@ -187,7 +187,7 @@ class AdminController extends Controller
     /**
      * Get the image to download
      */
-    public function downloadPictureFromImagecreator(Request $request){
+    public function downloadPictureFromImagecreator_ByPictureForImagecreatorID(Request $request){
         $validator = Validator::make($request->all(), [
             'picture_for_imagecreator_id' => 'required|integer|exists:pictures_for_imagecreator,id'
         ]);

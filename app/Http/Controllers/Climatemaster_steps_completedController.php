@@ -17,7 +17,7 @@ class Climatemaster_steps_completedController extends Controller
     /**
      * Returns the climatemaster_steps_completed model of the currenc year and the current user
      */
-    public function getCurrentClimatemaster_steps_completed(){
+    public function getClimatemaster_steps_completed_ByCurrentUser(){
         $user = User::find(auth()->user()->id);
 
         $climatemaster_steps_completed = $user->climatemaster_steps_completed()->where('year', Carbon::now()->year)->first();
@@ -36,7 +36,7 @@ class Climatemaster_steps_completedController extends Controller
     }
 
 
-    public function reduceShortTermCompleted(){
+    public function reduceShortTermCompleted_ByCurrentUser(){
         $user = User::find(auth()->user()->id);
         $climatemaster_steps_completed = $user->climatemaster_steps_completed()->where('year', Carbon::now()->year)->first();
         
@@ -66,7 +66,7 @@ class Climatemaster_steps_completedController extends Controller
 
     }
 
-    public function customizeCalculationCompleted(){
+    public function customizeCalculationCompleted_ByCurrentUser(){
         $user = User::find(auth()->user()->id);
         $climatemaster_steps_completed = $user->climatemaster_steps_completed()->where('year', Carbon::now()->year)->first();
         

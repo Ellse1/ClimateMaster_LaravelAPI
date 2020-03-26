@@ -13,13 +13,13 @@ class CompanySlideshowimageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:user,admin', ['except' => ['getSlideshowimageByCompanyID']]);
+        $this->middleware('auth.role:user,admin', ['except' => ['getSlideshowimages_ByCompanyID']]);
     }
 
     /**
      * Return the slideshowimages (From DB) for the company
      */
-    public function getSlideshowimageByCompanyID(Request $request){
+    public function getSlideshowimages_ByCompanyID(Request $request){
         $validator = Validator::make($request->all(),[
             'company_id' => "required|integer|exists:companies,id"
         ]);
@@ -41,7 +41,7 @@ class CompanySlideshowimageController extends Controller
     /**
      * Stores a slideshowimage for a company, if current user is allowed to edit this company
      */
-    public function store(Request $request){
+    public function storeSlideshowimage(Request $request){
         $validator = Validator::make($request->all(), [
             'company_id' => 'required|integer|exists:companies,id',
             'slideshowimage' => 'required|image|mimes:jpeg,jpg,png|max:2048',
@@ -88,7 +88,7 @@ class CompanySlideshowimageController extends Controller
     /**
      * Destroy a slideshowimage by id
      */
-    public function destroy(Request $request){
+    public function destroySlideshowimage_BySlideshowimageID(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|exists:company_slideshowimages,id'
         ]);

@@ -20,7 +20,7 @@ class ClimadviceController extends Controller
     //Constructor:
     public function __construct()
     {
-        $this->middleware('auth.role:admin', ['except' => ['index']]);
+        $this->middleware('auth.role:admin', ['except' => ['getAllClimadvices']]);
     }
 
 
@@ -29,7 +29,7 @@ class ClimadviceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAllClimadvices()
     {
         return (ClimadviceResource::collection(climadvice::all()))
         ->additional([
@@ -45,7 +45,7 @@ class ClimadviceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeClimadvice(Request $request)
     {
         //Check if user is logged in
         if(Auth::check() == false){
@@ -97,7 +97,7 @@ class ClimadviceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function updateClimadvice_ByClimadviceID(Request $request)
     {
         //Check if user is logged in
         if(Auth::check() == false){
@@ -149,7 +149,7 @@ class ClimadviceController extends Controller
      * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroyClimadvice_ByClimadviceID(Request $request)
     {
         if(Auth::check() == false){
             return response()->json([
