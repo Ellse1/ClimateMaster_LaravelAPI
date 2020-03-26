@@ -210,7 +210,7 @@ class UserController extends Controller
 
 
     //returns a datapackage with all the necessary data, to present one user
-    public function getDataToShowPublicUserProfile(Request $request){
+    public function getDataToShowPublicUserProfile_ByUsername(Request $request){
         
         //Check if username exists
         $validator = Validator::make($request->all(), [

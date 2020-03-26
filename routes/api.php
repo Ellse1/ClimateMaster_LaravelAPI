@@ -43,7 +43,7 @@ Route::post('user/getProfilePicture_ByCurrentUser', 'UserController@getProfilePi
 Route::post('user/saveAddressAndInstagram_ByCurrentUser', 'UserController@saveAddressAndInstagram_ByCurrentUser');
 Route::post('user/isCompanyAdmin_ByCurrentUser', 'UserController@isCompanyAdmin_ByCurrentUser');
 Route::post('user/checkShowGratulationBecomingClimateMaster_ByCurrentUser', 'UserController@checkShowGratulationBecomingClimateMaster_ByCurrentUser');
-Route::post('user/getDataToShowPublicUserProfile', 'UserController@getDataToShowPublicUserProfile');
+Route::post('user/getDataToShowPublicUserProfile_ByUsername', 'UserController@getDataToShowPublicUserProfile_ByUsername');
 
 //CLIMADVICE
 Route::post('climadvice/storeClimadvice', 'ClimadviceController@storeClimadvice');
