@@ -42,11 +42,21 @@ class AuthController extends Controller
             ]);
         }
 
+        //check if username exists, if whitespace is deleted:
+        $username_stripped = preg_replace('/\s/', '', $request->username);
+        $user = User::where('username', $username_stripped)->first();
+        if($user != null){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Dieser Benutzername ist schon vergeben. Verwende einen anderen.'
+            ]);
+        }
+
         // Create user with role: 'user'
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'username' =>  preg_replace('/\s/', '', $request->username), //delete Whitespace
+            'username' =>  $username_stripped,
             'email'    => $request->email,
             'password' => $request->password,
             'role' => 'user',
