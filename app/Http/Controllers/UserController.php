@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.role:user,admin', ['except' => ['isCompanyAdmin_ByCurrentUser', 'getDataToShowPublicUserProfile']]);
+        $this->middleware('auth.role:user,admin', ['except' => ['isCompanyAdmin_ByCurrentUser', 'getDataToShowPublicUserProfile_ByUsername']]);
     }
 
 
