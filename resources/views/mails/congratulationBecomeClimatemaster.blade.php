@@ -19,7 +19,7 @@
             freischalten. Folge dazu dem unten stehenden Link und logge dich ein.
 
             <h4>Präsentiere deinen Fortschritt</h4>
-            Damit sich auch weitete Personen nach deinem Vorbild für konsequenten Klimaschutz entscheiden, 
+            Damit sich auch weitere Personen nach deinem Vorbild für konsequenten Klimaschutz entscheiden, 
             kannst du dich als ClimateMaster 2020 Präsentieren. Wir haben auf unserer Plattform einige Werzeuge, 
             mit denen wir dich unterstützen, Freunde und Bekannte von Klimaschutz zu überzeugen. Folge dazu dem unten stehenden 
             Link und logge dich ein.
