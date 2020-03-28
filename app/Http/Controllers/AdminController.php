@@ -215,7 +215,10 @@ class AdminController extends Controller
             ]);
         }
         $picture = Image::make(Storage::get("/images/pictures_for_imagecreator/" . $ImageFromDB->picture_name));
-
+        //resize the picture to fixed hight of 1000px (auto width)
+        $picture->resize(null, 1000, function ($constraint) {
+            $constraint->aspectRatio();
+        });
         // Logo
         $logo = Image::make(Storage::get("/files/for_image_creator/LogoTransparent.png"));
         $logo->resize(200, 200);
