@@ -185,11 +185,22 @@ class UserController extends Controller
         }
 
         $date_climatemaster_verified = $climatemaster->date_climatemaster_verified;
-        $last_login = $user->last_login;
+        $user_last_login = $user->logins()->latest()->skip(1)->first(); //take not the last login (this is the current) but one before
 
-        //If he was verified as climatemaster, but didn't login since that -> show_gratulation!
-        //last_login lessThan (date_climatemaster_verified)
-        if($user->last_logout->lt($climatemaster->date_climatemaster_verified)){
+        if($user_last_login != null){
+            //If he was verified as climatemaster, but didn't login since that -> show_gratulation!
+            //last_login lessThan (date_climatemaster_verified)
+            if($user_last_login->created_at->lt($climatemaster->date_climatemaster_verified)){
+                return response()->json([
+                    'state' => 'success',
+                    'message' => 'Der User wurde als ClimateMaster für das aktuelle Jahr verifiziert, die Gratulation wurde noch nicht gesehen.',
+                    'show_gratulation' => true
+                ]);
+            }
+        }
+        //since 28.03.20 'logins' is an own table, before that, it was only one 'last_login' column in 'users' table
+        //If he is verified climatemaster, but has only one login entry (because he didn't login since the update is online)
+        else{
             return response()->json([
                 'state' => 'success',
                 'message' => 'Der User wurde als ClimateMaster für das aktuelle Jahr verifiziert, die Gratulation wurde noch nicht gesehen.',

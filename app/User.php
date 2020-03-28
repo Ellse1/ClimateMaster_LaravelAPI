@@ -52,6 +52,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(PublicUserProfile::class);
     }
 
+    public function logins(){
+        return $this->hasMany(Login::class);
+    }
+
     use Notifiable;
 
     /**
@@ -81,5 +85,4 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    protected $dates = ['last_login', 'last_logout'];
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
+use App\Login;
 use App\Mail\password_reset;
 use App\Mail\registered;
 use App\Mail\verification;
@@ -128,9 +129,11 @@ class AuthController extends Controller
             
         }
 
-        //set user->last_login
-        $user->last_login = Carbon::now();
-        $user->save();
+        //new -> create login:
+        $login = new Login();
+        $login->user_id = $user->id;
+        $login->save(); //the login_created_at is the exact date
+
     
         return (new UserResource($request->user()))
         ->additional([
