@@ -32,9 +32,10 @@ class PublicUserProfileController extends Controller
         $users = User::where('profile_picture_name', '!=', null)
             ->has('climatemasters')
             ->whereHas('public_user_profile', function (Builder $query) {
-                 $query->where('public', true);
+                $query->where('public', true);
             })
             ->with('public_user_profile')
+            ->orderBy('created_at')
             ->get();        
         
         return (UserForPublicUserProfileList::collection($users))->additional([
