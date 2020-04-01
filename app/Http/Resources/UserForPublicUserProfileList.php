@@ -35,7 +35,7 @@ class UserForPublicUserProfileList extends JsonResource
             }
             else{
                 //get latest co2 calculation
-                $co2calculation = $climatemaster->co2calculation()->latest()->first();
+                $co2calculation = $climatemaster->co2calculations()->latest()->first();
                 if($co2calculation != null){
                     if($co2calculation->total_emissions <= 9){
                         $climatemaster_state = 'climatemaster_starter';
