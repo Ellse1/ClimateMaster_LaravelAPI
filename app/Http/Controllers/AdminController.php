@@ -6,9 +6,11 @@ use App\Climatemaster;
 use App\Company;
 use App\Http\Resources\CO2CalculationResource;
 use App\Http\Resources\CompanyResource;
+use App\Http\Resources\PageLogResource;
 use App\Http\Resources\PictureForImagecreatorResource;
 use App\Http\Resources\UserResource;
 use App\Mail\congratulationBecomeClimatemaster;
+use App\PageLog;
 use App\Picture_for_imagecreator;
 use App\User;
 use Carbon\Carbon;
@@ -263,6 +265,15 @@ class AdminController extends Controller
     }
 
 
-
-
+    /**
+     * Return all page logs -> to show in admin dashboard
+     */
+    public function getAllPageLogs(Request $request){
+        
+        return (PageLogResource::collection(PageLog::all()))->additional([
+            'state' => 'success',
+            'message' => 'Es wurden alle PageLogs zurückgegeben.'
+        ]);
+        
+    }
 }

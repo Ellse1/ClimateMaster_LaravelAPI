@@ -88,7 +88,7 @@ Route::post('admin/getLastCO2CalculationOfUser_ByUserID', 'AdminController@getLa
 Route::post('admin/setUserClimatemaster_ByUserID', 'AdminController@setUserClimatemaster_ByUserID');
 Route::post('admin/getAllImagesForPublication', 'AdminController@getAllImagesForPublication');
 Route::post('admin/downloadPictureFromImagecreator_ByPictureForImagecreatorID', 'AdminController@downloadPictureFromImagecreator_ByPictureForImagecreatorID');
-
+Route::post('admin/getAllPageLogs', 'AdminController@getAllPageLogs');
 
 //CO2Calculation
 Route::post('co2calculation/storeCO2Calculation_ByCurrentUser', "CO2CalculationController@storeCO2Calculation_ByCurrentUser");
@@ -120,3 +120,7 @@ Route::post('publicUserProfile/getPublicUserProfile_ByCurrentUser', 'PublicUserP
 Route::post('publicUserProfile/changePublic_ByCurrentUser', 'PublicUserProfileController@changePublic_ByCurrentUser');
 Route::post('publicUserProfile/updatePublicUserProfile_ByCurrentUser', 'PublicUserProfileController@updatePublicUserProfile_ByCurrentUser');
 Route::post('publicUserProfile/getAllWithCalculationAndProfilePicture', 'PublicUserProfileController@getAllWithCalculationAndProfilePicture');
+
+
+//PageLog
+Route::post('pageLog/addPageLog', 'PageLogController@addPageLog');
