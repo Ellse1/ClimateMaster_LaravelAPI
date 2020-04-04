@@ -29,16 +29,33 @@ class PublicUserProfileController extends Controller
         // Get all public profiles
         // $publicUserProfiles = PublicUserProfile::where('public', true)->with('user')->get();
 
-        $users = User::where('profile_picture_name', '!=', null)
-            ->has('climatemasters')
+        $climateMasterUsers = User::where('profile_picture_name', '!=', null)
+            ->whereHas('climatemasters', function (Builder $query) {
+                $query->where('verified', true);
+            })
             ->whereHas('public_user_profile', function (Builder $query) {
                 $query->where('public', true);
             })
-            ->with('public_user_profile')
             ->orderBy('created_at')
-            ->get();        
+            ->get();    
+                
+        $notClimateMasterUsers = User::where('profile_picture_name', '!=', null)
+            ->whereHas('climatemasters', function (Builder $query) {
+                $query->where('verified', false);
+            })
+            ->whereHas('public_user_profile', function (Builder $query) {
+                $query->where('public', true);
+            })
+            ->orderBy('created_at')
+            ->get();    
         
-        return (UserForPublicUserProfileList::collection($users))->additional([
+        $usersToReturn = $climateMasterUsers->merge($notClimateMasterUsers);
+                
+
+            // $userForPublicProfileListCollection = UserForPublicUserProfileList::collection($users)->sortBy('climatemaster_state');
+
+
+        return (UserForPublicUserProfileList::collection($usersToReturn))->additional([
             'state' => 'success',
             'message' => 'Es wurden alle Öffentliche Profile zurückgegeben, die auf öffentlich geschaltet wurden, mindestens eine Berechnung haben und ein Profilbild haben.'
         ]);

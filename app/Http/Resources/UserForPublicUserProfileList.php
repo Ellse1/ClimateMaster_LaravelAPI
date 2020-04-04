@@ -49,7 +49,6 @@ class UserForPublicUserProfileList extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'profile_picture_base64' => base64_encode($image),
-            'public_profile_general_information' => $this->public_user_profile->information_general,
             'climatemaster_state' => $climatemaster_state
         ];
     }
