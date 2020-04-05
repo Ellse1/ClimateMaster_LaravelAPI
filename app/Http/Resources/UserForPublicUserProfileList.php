@@ -24,9 +24,6 @@ class UserForPublicUserProfileList extends JsonResource
         if(Storage::exists("/images/profilePictures/" . $this->profile_picture_name)){
             $image = Image::make(Storage::get("/images/profilePictures/" . $this->profile_picture_name));
             //Resize the image -> send data more fast to the client
-            $image->resize(null, 50, function ($constraint) {
-                $constraint->aspectRatio();
-            });
             $image = $image->encode()->encoded;
         }else{
             $image = null;
