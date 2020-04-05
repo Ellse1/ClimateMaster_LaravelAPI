@@ -29,6 +29,7 @@ class UserForPublicUserProfileList_badPictureQuality_Resource extends JsonResour
             $image->resize(null, 40, function ($constraint) {
                 $constraint->aspectRatio();
             });
+            $image->blur();
             $image = $image->encode()->encoded;
         }else{
             $image = null;
