@@ -26,7 +26,7 @@ class UserForPublicUserProfileList_badPictureQuality_Resource extends JsonResour
         if(Storage::exists("/images/profilePictures/" . $this->profile_picture_name)){
             $image = Image::make(Storage::get("/images/profilePictures/" . $this->profile_picture_name));
             //Resize the image -> send data more fast to the client
-            $image->resize(null, 60, function ($constraint) {
+            $image->resize(null, 40, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $image = $image->encode()->encoded;
