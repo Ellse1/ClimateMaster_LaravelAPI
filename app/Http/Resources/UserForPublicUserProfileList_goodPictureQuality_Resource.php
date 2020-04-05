@@ -22,6 +22,10 @@ class UserForPublicUserProfileList_goodPictureQuality_Resource extends JsonResou
             //Check if this picture exists
             if(Storage::exists("/images/profilePictures/" . $this->profile_picture_name)){
                 $image = Image::make(Storage::get("/images/profilePictures/" . $this->profile_picture_name));
+                //It does't need to be bigger, than 600 with -> good enough
+                $image->resize(null, 400, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
                 $image = $image->encode()->encoded;
             }else{
                 $image = null;
