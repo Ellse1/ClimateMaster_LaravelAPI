@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PublicUserProfileResource;
-use App\Http\Resources\UserForPublicUserProfileList;
+use App\Http\Resources\UserForPublicUserProfileList_badPictureQuality_Resource;
+use App\Http\Resources\UserForPublicUserProfileList_goodPictureQuality_Resource;
 use App\PublicUserProfile;
 use App\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -52,10 +53,15 @@ class PublicUserProfileController extends Controller
         $usersToReturn = $climateMasterUsers->merge($notClimateMasterUsers);
                 
 
-            // $userForPublicProfileListCollection = UserForPublicUserProfileList::collection($users)->sortBy('climatemaster_state');
+        //Check if i should compromise the profile picture images -> load faster but only bad image quality
+        if($request->compromise == true){
+            return (UserForPublicUserProfileList_badPictureQuality_Resource::collection($usersToReturn))->additional([
+                'state' => 'success',
+                'message' => 'Es wurden alle Öffentliche Profile zurückgegeben, die auf öffentlich geschaltet wurden, mindestens eine Berechnung haben und ein Profilbild haben.'
+            ]);
+        }
 
-
-        return (UserForPublicUserProfileList::collection($usersToReturn))->additional([
+        return (UserForPublicUserProfileList_goodPictureQuality_Resource::collection($usersToReturn))->additional([
             'state' => 'success',
             'message' => 'Es wurden alle Öffentliche Profile zurückgegeben, die auf öffentlich geschaltet wurden, mindestens eine Berechnung haben und ein Profilbild haben.'
         ]);

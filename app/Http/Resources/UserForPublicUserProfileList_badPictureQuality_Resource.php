@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 
-class UserForPublicUserProfileList extends JsonResource
+class UserForPublicUserProfileList_badPictureQuality_Resource extends JsonResource
 {
+    
+    
     /**
      * Transform the resource into an array.
      *
@@ -24,6 +26,9 @@ class UserForPublicUserProfileList extends JsonResource
         if(Storage::exists("/images/profilePictures/" . $this->profile_picture_name)){
             $image = Image::make(Storage::get("/images/profilePictures/" . $this->profile_picture_name));
             //Resize the image -> send data more fast to the client
+            $image->resize(null, 60, function ($constraint) {
+                $constraint->aspectRatio();
+            });
             $image = $image->encode()->encoded;
         }else{
             $image = null;
