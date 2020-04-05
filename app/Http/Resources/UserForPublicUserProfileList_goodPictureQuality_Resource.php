@@ -55,7 +55,8 @@ class UserForPublicUserProfileList_goodPictureQuality_Resource extends JsonResou
                 'id' => $this->id,
                 'username' => $this->username,
                 'profile_picture_base64' => base64_encode($image),
-                'climatemaster_state' => $climatemaster_state
+                'climatemaster_state' => $climatemaster_state,            
+                'public_user_profile' => $this->public_user_profile // -> If i click on it on the "index" page -> don't need to reload data
             ];
     }
 }
