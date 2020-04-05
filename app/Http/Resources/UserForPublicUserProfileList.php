@@ -6,6 +6,8 @@ use App\Climatemaster;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+
 
 class UserForPublicUserProfileList extends JsonResource
 {
@@ -20,7 +22,12 @@ class UserForPublicUserProfileList extends JsonResource
 
         //Check if this picture exists
         if(Storage::exists("/images/profilePictures/" . $this->profile_picture_name)){
-            $image = Storage::get("/images/profilePictures/" . $this->profile_picture_name);
+            $image = Image::make(Storage::get("/images/profilePictures/" . $this->profile_picture_name));
+            //Resize the image -> send data more fast to the client
+            $image->resize(null, 50, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $image = $image->encode()->encoded;
         }else{
             $image = null;
         }
