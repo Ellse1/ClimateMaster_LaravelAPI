@@ -54,7 +54,7 @@ class PublicUserProfileController extends Controller
                 
 
         //Check if i should compromise the profile picture images -> load faster but only bad image quality
-        if($request->compromise == true){
+        if($request->compress == true){
             return (UserForPublicUserProfileList_badPictureQuality_Resource::collection($usersToReturn))->additional([
                 'state' => 'success',
                 'message' => 'Es wurden alle Öffentliche Profile zurückgegeben, die auf öffentlich geschaltet wurden, mindestens eine Berechnung haben und ein Profilbild haben.'
