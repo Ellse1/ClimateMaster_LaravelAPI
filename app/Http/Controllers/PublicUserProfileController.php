@@ -153,6 +153,7 @@ class PublicUserProfileController extends Controller
         $publicUserProfile->information_mobility = $request->information_mobility;
         $publicUserProfile->information_nutrition = $request->information_nutrition;
         $publicUserProfile->information_consumption = $request->information_consumption;
+        $publicUserProfile->information_compensation = $request->information_compensation;
         $publicUserProfile->information_public_emissions = $request->information_public_emissions;
         $publicUserProfile->save();
 
