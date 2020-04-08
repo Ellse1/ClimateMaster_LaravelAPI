@@ -157,7 +157,7 @@ class PublicUserProfileController extends Controller
         $publicUserProfile->information_public_emissions = $request->information_public_emissions;
         $publicUserProfile->save();
 
-        return response()->json([
+        return (new PublicUserProfileResource($publicUserProfile))->additional([
             'state' => 'success',
             'message' => 'Das öffentliche Profil wurde erfolgreich gespeichert.'
         ]);
