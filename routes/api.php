@@ -89,6 +89,10 @@ Route::post('admin/setUserClimatemaster_ByUserID', 'AdminController@setUserClima
 Route::post('admin/getAllImagesForPublication', 'AdminController@getAllImagesForPublication');
 Route::post('admin/downloadPictureFromImagecreator_ByPictureForImagecreatorID', 'AdminController@downloadPictureFromImagecreator_ByPictureForImagecreatorID');
 Route::post('admin/getAllPageLogs', 'AdminController@getAllPageLogs');
+Route::post('admin/saveClimadviceCheck', 'AdminController@saveClimadviceCheck');
+Route::post('admin/deleteClimadviceCheck_ByClimadviceCheckID', 'AdminController@deleteClimadviceCheck_ByClimadviceCheckID');
+
+
 
 //CO2Calculation
 Route::post('co2calculation/storeCO2Calculation_ByCurrentUser', "CO2CalculationController@storeCO2Calculation_ByCurrentUser");
@@ -106,7 +110,6 @@ Route::get('paypal/cancel', 'PaypalController@cancel')->name('paypal.cancel');
 Route::get('paypal/success', 'PaypalController@success')->name('paypal.success');
 Route::post('paypal/checkPayment', 'PaypalController@checkPayment');
 
-
 //PictureForImageCreator
 Route::post('picture_for_imagecreator/storePictureForImageCreator_ByCurrentUser', 'PictureForImagecreatorController@storePictureForImageCreator_ByCurrentUser');
 Route::post('picture_for_imagecreator/getPicturesForImagecreator_ByCurrentUser', 'PictureForImagecreatorController@getPicturesForImagecreator_ByCurrentUser');
@@ -114,13 +117,16 @@ Route::post('picture_for_imagecreator/destroyPictureForImagecreator_ByPictureFor
 Route::post('picture_for_imagecreator/download_ByPictureForImagecreatorID', 'PictureForImagecreatorController@download_ByPictureForImagecreatorID');
 Route::post('picture_for_imagecreator/updateSharingPermitted_ByPictureForImagecreatorID', 'PictureForImagecreatorController@updateSharingPermitted_ByPictureForImagecreatorID');
 
-
 //PublicUserProfile
 Route::post('publicUserProfile/getPublicUserProfile_ByCurrentUser', 'PublicUserProfileController@getPublicUserProfile_ByCurrentUser');
 Route::post('publicUserProfile/changePublic_ByCurrentUser', 'PublicUserProfileController@changePublic_ByCurrentUser');
 Route::post('publicUserProfile/updatePublicUserProfile_ByCurrentUser', 'PublicUserProfileController@updatePublicUserProfile_ByCurrentUser');
 Route::post('publicUserProfile/getAllWithCalculationAndProfilePicture', 'PublicUserProfileController@getAllWithCalculationAndProfilePicture');
 
-
 //PageLog
 Route::post('pageLog/addPageLog', 'PageLogController@addPageLog');
+
+//ClimadviceChecks
+Route::post('climadviceCheck/getAllClimadviceChecks', 'ClimadviceCheckController@getAllClimadviceChecks');
+
+

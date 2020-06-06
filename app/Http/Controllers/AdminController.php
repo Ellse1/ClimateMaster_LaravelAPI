@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\ClimadviceCheck;
 use App\Climatemaster;
 use App\Company;
+use App\Http\Resources\ClimadviceCheckResource;
 use App\Http\Resources\CO2CalculationResource;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\PageLogResource;
@@ -275,5 +277,65 @@ class AdminController extends Controller
             'message' => 'Es wurden alle PageLogs zurückgegeben.'
         ]);
         
+    }
+
+
+
+    /**
+     * Save a climadviceCheck
+     */
+    public function saveClimadviceCheck(Request $request){
+        $validator = Validator::make($request->all(), [
+            'climadvice_id' => 'required|integer|exists:climadvices,id',
+            'action' => 'required',
+            'question' => 'required',
+            'answer_proposal' => 'required',
+            'button_send_text' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es wurden nicht alle nötigen Paramenter mitgegeben um den ClimadviceCheck zu speichern. ' + $validator->errors() 
+            ]);
+        }
+
+        $climadviceCheck = new ClimadviceCheck();
+        $climadviceCheck->climadvice_id = $request->climadvice_id;
+        $climadviceCheck->action = $request->action;
+        $climadviceCheck->question = $request->question;
+        $climadviceCheck->answer_proposal = $request->answer_proposal;
+        $climadviceCheck->button_send_text = $request->button_send_text;
+        $climadviceCheck->save();
+
+        return (new ClimadviceCheckResource($climadviceCheck))->additional([
+            'state' => 'success',
+            'message' => 'Der ClimadviceCheck wurde erfolgreich gespeichert'
+        ]);
+
+    }
+
+    /**
+     * Delete ClimadviceCheck by ID
+     */
+    public function deleteClimadviceCheck_ByClimadviceCheckID(Request $request){
+        $validator = Validator::make($request->all(), [
+            'climadviceCheckID' => 'required|integer|exists:climadvice_checks,id'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es wurden nicht die richtigen Paramenter mitgegeben. ' + $validator->errors()
+            ]);
+        }
+
+        $climadviceCheck = ClimadviceCheck::find($request->climadviceCheckID);
+        $climadviceCheck->delete();
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Der ClimadviceCheck wurde erfolgreich gelöscht.'
+        ]);
     }
 }
