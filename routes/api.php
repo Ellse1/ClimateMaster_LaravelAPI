@@ -129,4 +129,5 @@ Route::post('pageLog/addPageLog', 'PageLogController@addPageLog');
 //ClimadviceChecks
 Route::post('climadviceCheck/getAllClimadviceChecks', 'ClimadviceCheckController@getAllClimadviceChecks');
 
-
+//ClimadviceUserChecks
+Route::post('climadviceUserCheck/store', 'ClimadviceUserCheckController@store');
