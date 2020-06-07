@@ -104,7 +104,15 @@ class CO2CalculationController extends Controller
             $climatemaster->year = Carbon::now()->year;
             $climatemaster->save();
         }
+        //check if a co2calculation of the current year has a compensation -> take this to current co2 calculation ->don't loose co2compensations
+        else{
+            $co2CalculationsOfCurrentYearWithCompensation = $climatemaster->co2calculations()->where('compensation', '!=', null)->latest();;
+            if($co2CalculationsOfCurrentYearWithCompensation != null){
+                $co2Calculation->compensation = $co2CalculationsOfCurrentYearWithCompensation->first()->compensation;
+            }
+        }
 
+        
 
         $co2Calculation->climatemaster_id = $climatemaster->id;
         $co2Calculation->save();

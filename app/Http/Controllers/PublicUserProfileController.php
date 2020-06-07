@@ -73,6 +73,7 @@ class PublicUserProfileController extends Controller
 
     /**
      * Return the public Profile of the current user
+     * -> if there is no public user profile -> create one
      */
     public function getPublicUserProfile_ByCurrentUser(Request $request){
         $user = User::find(auth()->user()->id);
@@ -80,10 +81,11 @@ class PublicUserProfileController extends Controller
         $publicUserProfile = $user->public_user_profile;
 
         if($publicUserProfile == null){
-            return response()->json([
-                'state' => 'error',
-                'message' => 'Dieser Benutzer hat noch kein Öffentliches Profil'
-            ]);
+            $publicUserProfile_new = new PublicUserProfile();
+            $publicUserProfile_new->user_id = $user->id;
+            $publicUserProfile_new->public = false;
+            $publicUserProfile_new->save();
+            $publicUserProfile = $publicUserProfile_new;
         }
         
         return (new PublicUserProfileResource($publicUserProfile))->additional([
@@ -96,7 +98,10 @@ class PublicUserProfileController extends Controller
     //Change the value of 'public'. If there is no PublicUserProfile in Database until now -> create one
     public function changePublic_ByCurrentUser(Request $request){
         $validator = Validator::make($request->all(), [
-            'public' => 'required|boolean'
+            'public' => 'required|boolean',
+            'public_climadvice_checks' => 'required|boolean',
+            'public_social_media_names' => 'required|boolean',
+            'public_pictures' => 'required|boolean'
         ]);
         if($validator->fails()){
             return response()->json([
@@ -115,6 +120,9 @@ class PublicUserProfileController extends Controller
         }   
 
         $publicUserProfile->public = $request->public;
+        $publicUserProfile->public_climadvice_checks = $request->public_climadvice_checks;
+        $publicUserProfile->public_social_media_names = $request->public_social_media_names;
+        $publicUserProfile->public_pictures = $request->public_pictures;
         $publicUserProfile->save();
 
         if($request->public){
