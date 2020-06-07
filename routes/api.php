@@ -131,3 +131,4 @@ Route::post('climadviceCheck/getAllClimadviceChecks', 'ClimadviceCheckController
 
 //ClimadviceUserChecks
 Route::post('climadviceUserCheck/store', 'ClimadviceUserCheckController@store');
+Route::post('climadviceUserCheck/getClimadviceUserChecks_ByCurrentUser', 'ClimadviceUserCheckController@getClimadviceUserChecks_ByCurrentUser');

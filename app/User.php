@@ -52,6 +52,14 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(PublicUserProfile::class);
     }
 
+    //Return all the climadviceUserChecks this user has
+    public function climadvice_user_checks(){
+        return $this->hasMany(ClimadviceUserCheck::class);
+    }
+
+
+
+
     public function logins(){
         return $this->hasMany(Login::class);
     }

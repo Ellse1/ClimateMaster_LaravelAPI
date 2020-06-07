@@ -2,13 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\ClimadviceCheck;
 use App\ClimadviceUserCheck;
 use App\Http\Resources\ClimadviceUserCheckResource;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ClimadviceUserCheckController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("auth.role:user,admin", ["except" => ["store"]]);
+    }
+
+    /**
+     * Get all climadviceUserhecks of current User
+     */
+    public function getClimadviceUserChecks_ByCurrentUser(Request $request){
+        //get all climadviceUserChecks of this user
+        $user = User::find(auth()->user()->id);
+        $climadviceUserChecks_ofUser = $user->climadvice_user_checks()->get();
+
+        //get all climadviceChecks
+        $climadviceChecks = ClimadviceCheck::all();
+
+        $climadviceUserChecks_toReturn = collect();
+
+        //get only the latest climadviceUserCheck of each climadviceCheck
+        foreach($climadviceChecks as $climadviceCheck){
+            $climadviceUserChecks_of_climadviceCheck = $climadviceUserChecks_ofUser->where('climadvice_check_id', $climadviceCheck->id)->sortByDesc('created_at');
+            if($climadviceUserChecks_of_climadviceCheck != null){
+                $climadviceUserChecks_toReturn->push($climadviceUserChecks_of_climadviceCheck->first());
+            }
+        }
+
+        return (ClimadviceUserCheckResource::collection($climadviceUserChecks_toReturn))->additional([
+            'state' => 'success',
+            'message' => 'Es wurden die aktuellsten ClimadviceUserChecks des aktuellen Benutzers zurück gegeben.'
+        ]);
+    }
+
+
     /**
      * save a ClimadviceUserCheck
      */
