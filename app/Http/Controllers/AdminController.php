@@ -306,6 +306,8 @@ class AdminController extends Controller
         $climadviceCheck->question = $request->question;
         $climadviceCheck->answer_proposal = $request->answer_proposal;
         $climadviceCheck->button_send_text = $request->button_send_text;
+        $climadviceCheck->icon_name = $request->icon_name;
+        $climadviceCheck->visible = true;
         $climadviceCheck->save();
 
         return (new ClimadviceCheckResource($climadviceCheck))->additional([
@@ -316,11 +318,13 @@ class AdminController extends Controller
     }
 
     /**
-     * Delete ClimadviceCheck by ID
+     * Hide ClimadviceCheck by ID 
+     * Make visible = false
      */
-    public function deleteClimadviceCheck_ByClimadviceCheckID(Request $request){
+    public function changeClimadviceCheckVisibility_ByClimadviceCheckID(Request $request){
         $validator = Validator::make($request->all(), [
-            'climadviceCheckID' => 'required|integer|exists:climadvice_checks,id'
+            'climadviceCheckID' => 'required|integer|exists:climadvice_checks,id',
+            'visible' => 'required|boolean'
         ]);
 
         if($validator->fails()){
@@ -331,11 +335,20 @@ class AdminController extends Controller
         }
 
         $climadviceCheck = ClimadviceCheck::find($request->climadviceCheckID);
-        $climadviceCheck->delete();
+        $climadviceCheck->visible = $request->visible;
+        $climadviceCheck->save();
 
-        return response()->json([
-            'state' => 'success',
-            'message' => 'Der ClimadviceCheck wurde erfolgreich gelöscht.'
-        ]);
+        if($climadviceCheck->visible == false){
+            return (new ClimadviceCheckResource($climadviceCheck))->additional([
+                'state' => 'success',
+                'message' => 'Die Sichtbarkeit wurde erfolgreich bearbeitet (jetzt nicht mehr sichtbar).'
+            ]);
+        }
+        else{
+            return (new ClimadviceCheckResource($climadviceCheck))->additional([
+                'state' => 'success',
+                'message' => 'Die Sichtbarkeit wurde erfolgreich bearbeitet (jetzt sichtbar).'
+            ]);
+        }
     }
 }

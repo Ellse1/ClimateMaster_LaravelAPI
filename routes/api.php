@@ -90,7 +90,7 @@ Route::post('admin/getAllImagesForPublication', 'AdminController@getAllImagesFor
 Route::post('admin/downloadPictureFromImagecreator_ByPictureForImagecreatorID', 'AdminController@downloadPictureFromImagecreator_ByPictureForImagecreatorID');
 Route::post('admin/getAllPageLogs', 'AdminController@getAllPageLogs');
 Route::post('admin/saveClimadviceCheck', 'AdminController@saveClimadviceCheck');
-Route::post('admin/deleteClimadviceCheck_ByClimadviceCheckID', 'AdminController@deleteClimadviceCheck_ByClimadviceCheckID');
+Route::post('admin/changeClimadviceCheckVisibility_ByClimadviceCheckID', 'AdminController@changeClimadviceCheckVisibility_ByClimadviceCheckID');
 
 
 
@@ -127,7 +127,9 @@ Route::post('publicUserProfile/getAllWithCalculationAndProfilePicture', 'PublicU
 Route::post('pageLog/addPageLog', 'PageLogController@addPageLog');
 
 //ClimadviceChecks
+Route::post('climadviceCheck/getVisibleClimadviceChecks', 'ClimadviceCheckController@getVisibleClimadviceChecks');
 Route::post('climadviceCheck/getAllClimadviceChecks', 'ClimadviceCheckController@getAllClimadviceChecks');
+
 
 //ClimadviceUserChecks
 Route::post('climadviceUserCheck/store', 'ClimadviceUserCheckController@store');
