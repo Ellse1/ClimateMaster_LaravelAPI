@@ -80,7 +80,7 @@ class UserController extends Controller
         }
     }
 
-    public function saveAddressAndInstagram_ByCurrentUser(Request $request){
+    public function saveAddressAndSocialMediaInformation_ByCurrentUser(Request $request){
         $user = auth()->user();
 
         if($request->street != "undefined"){
@@ -113,12 +113,18 @@ class UserController extends Controller
         if($request->instagram_name != "undefined"){
             $user->instagram_name = $request->instagram_name;
         }
-        
+        if($request->facebook_name != "undefined"){
+            $user->facebook_name = $request->facebook_name;
+        }
+        if($request->whatsapp_number != "undefined"){
+            $user->whatsapp_number = $request->whatsapp_number;
+        }
+
         $user->save();
 
         return response()->json([
             'state' => 'success',
-            'message' => 'Adressdaten bzw. Instagram Name erfolgreich gespeichert.'
+            'message' => 'Profildaten erfolgreich gespeichert.'
         ]);
     }
 

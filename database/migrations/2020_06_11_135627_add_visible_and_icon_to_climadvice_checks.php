@@ -27,7 +27,8 @@ class AddVisibleAndIconToClimadviceChecks extends Migration
     public function down()
     {
         Schema::table('climadvice_checks', function (Blueprint $table) {
-            //
+            $table->dropColumn('icon_name');
+            $table->dropColumn('visible');
         });
     }
 }

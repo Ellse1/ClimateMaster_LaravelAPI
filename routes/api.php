@@ -40,7 +40,7 @@ Route::post('/passwordReset', 'Auth\AuthController@setNewPassword');
 //USER
 Route::post('user/addProfilePicture_ByCurrentUser', 'UserController@addProfilePicture_ByCurrentUser');
 Route::post('user/getProfilePicture_ByCurrentUser', 'UserController@getProfilePicture_ByCurrentUser');
-Route::post('user/saveAddressAndInstagram_ByCurrentUser', 'UserController@saveAddressAndInstagram_ByCurrentUser');
+Route::post('user/saveAddressAndSocialMediaInformation_ByCurrentUser', 'UserController@saveAddressAndSocialMediaInformation_ByCurrentUser');
 Route::post('user/isCompanyAdmin_ByCurrentUser', 'UserController@isCompanyAdmin_ByCurrentUser');
 Route::post('user/checkShowGratulationBecomingClimateMaster_ByCurrentUser', 'UserController@checkShowGratulationBecomingClimateMaster_ByCurrentUser');
 Route::post('user/getDataToShowPublicUserProfile_ByUsername', 'UserController@getDataToShowPublicUserProfile_ByUsername');
