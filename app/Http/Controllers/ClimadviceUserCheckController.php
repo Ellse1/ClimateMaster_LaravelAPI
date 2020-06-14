@@ -16,7 +16,7 @@ class ClimadviceUserCheckController extends Controller
 
     public function __construct()
     {
-        $this->middleware("auth.role:user,admin", ["except" => ["store", "getClimadviceUserChecksForPublicProfile_ByUsername"]]);
+        $this->middleware("auth.role:user,admin", ["except" => ["store"]]);
     }
 
     /**
@@ -25,7 +25,7 @@ class ClimadviceUserCheckController extends Controller
     public function getClimadviceUserChecks_ByCurrentUser(Request $request){
         //get all climadviceUserChecks of this user
         $user = User::find(auth()->user()->id);
-        $climadviceUserChecks_ofUser = $user->climadvice_user_checks()->get();
+        $climadviceUserChecks_ofUser = $user->climadvice_user_checks()->where('active', true)->get();
 
         //get all climadviceChecks
         $climadviceChecks = ClimadviceCheck::all();
@@ -102,4 +102,42 @@ class ClimadviceUserCheckController extends Controller
         ]);
 
     }  
+
+
+    /**
+     * Delete all climadviceUserChecks of a climadviceCheck of current User -> a user doesn't do a climadviceCheck anymore
+     */
+    public function deactivateAllOfClimadviceCheck_ByCurrentUser(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:climadvice_checks,id'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Es wurde keine valide id mitgegeben. ' . $validator->errors()
+            ]);
+        }
+
+        $user_id = auth()->user()->id;
+        //get all the climadviceUserChecks of this climadviceCheck of this user
+        $climadvice_user_checks = ClimadviceUserCheck::where('climadvice_check_id', $request->id)
+        ->where('user_id', $user_id)
+        ->get();
+
+        //deactivate all climadviceUserCheks
+        foreach($climadvice_user_checks as $climadviceUserCheck){
+            $climadviceUserCheck->active = false;
+            $climadviceUserCheck->save();
+        }
+
+        // $climadvice_user_check->delete();
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Der ClimadviceCheck wurde erfolgreich entfernt'
+        ]);
+
+    }
+
+
 }

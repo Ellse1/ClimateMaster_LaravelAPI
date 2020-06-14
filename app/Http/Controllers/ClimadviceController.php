@@ -226,30 +226,42 @@ class ClimadviceController extends Controller
 
         $user_id = $user->id;
 
-        $climadviceWithClimadviceUserChecks_OfUsername = Climadvice::with(['climadvice_checks.climadvice_user_checks' => function($qu) use($user_id){
-            $qu->where('user_id', $user_id);
-        }])
-        ->whereHas('climadvice_user_checks', function($query) use($user_id){
-                $query->where('user_id', $user_id);
-              })
-        ->get();
-        
-        
-        // ->whereHas('climadvice_user_checks', function($query) use($user_id){
-        //     $query->where('user_id', $user_id);
-        //  })->get();
-        
-        // ::with(['climadvice_user_checks' => function($q) use($user_id){
-        //     $q->where('user_id', $user_id);
+        // $climadviceWithClimadviceUserChecks_OfUsername = Climadvice::with(['climadvice_checks.climadvice_user_checks' => function($qu) use($user_id){
+        //     $qu->where('user_id', $user_id)->where('active', true);
         // }])
         // ->whereHas('climadvice_user_checks', function($query) use($user_id){
-        //     $query->where('user_id', $user_id);
-        //  })->get();
+        //         $query->where('user_id', $user_id)->where('active', true);
+        //       })
+        // ->get();
+
+        $climadviceWithClimadviceUserChecks_OfUsername = Climadvice::with(['climadvice_checks' => function($q) use($user_id){
+            $q->whereHas('climadvice_user_checks', function($qu) use($user_id){
+                $qu->where('active', true)->where('user_id', $user_id);   
+            }
+            )->with('climadvice_user_checks')
+            ;
+        }
+        ])->whereHas('climadvice_user_checks', function($qu) use($user_id){
+            $qu->where('active', true)->where('user_id', $user_id);   
+        }
+        )
+        ->get();
+            
+            
+            
+        //     ->where('active', true);
+        // }])
+        // ->whereHas('climadvice_user_checks', function($query) use($user_id){
+        //         $query->where('user_id', $user_id)->where('active', true);
+        //       })
+        // ->get();
+        
+     
 
         return response()->json([
             'data' => $climadviceWithClimadviceUserChecks_OfUsername,
             'state' => 'success',
-            'message' => 'Alle ClimadviceUserChecks mit information zu den ClimadviceChecks zurück gegeben.'
+            'message' => 'Alle ClimadviceChecks mit information zu den ClimadviceChecks zurück gegeben.'
         
         ]);
 

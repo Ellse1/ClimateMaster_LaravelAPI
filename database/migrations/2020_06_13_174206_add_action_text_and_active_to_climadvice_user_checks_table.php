@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddActionTextToClimadviceUserChecksTable extends Migration
+class AddActionTextAndActiveToClimadviceUserChecksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class AddActionTextToClimadviceUserChecksTable extends Migration
     {
         Schema::table('climadvice_user_checks', function (Blueprint $table) {
             $table->string('action_text')->after('question_answer')->nullable();
+            $table->boolean('active')->after('action_text')->default(true);
         });
     }
 
@@ -27,6 +28,7 @@ class AddActionTextToClimadviceUserChecksTable extends Migration
     {
         Schema::table('climadvice_user_checks', function (Blueprint $table) {
             $table->dropColumn('action_text');
+            $table->dropColumn('active');
         });
     }
 }
