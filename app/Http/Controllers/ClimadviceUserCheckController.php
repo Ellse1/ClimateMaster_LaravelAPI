@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Climadvice;
 use App\ClimadviceCheck;
 use App\ClimadviceUserCheck;
 use App\Http\Resources\ClimadviceUserCheckResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 
 class ClimadviceUserCheckController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware("auth.role:user,admin", ["except" => ["store"]]);
+        $this->middleware("auth.role:user,admin", ["except" => ["store", "getClimadviceUserChecksForPublicProfile_ByUsername"]]);
     }
 
     /**
@@ -68,9 +70,16 @@ class ClimadviceUserCheckController extends Controller
         $climadviceUserCheck->climadvice_id = $request->climadvice_id;
         $climadviceUserCheck->climadvice_check_id = $request->climadvice_check_id;
         
+        //get the climadviceCheck -> to create the right action_text
+        $climadviceCheck = ClimadviceCheck::find($request->climadvice_check_id);
+
         //check if there was sent an answer to the question
         if($request->question_answer != null){
             $climadviceUserCheck->question_answer = $request->question_answer;
+            $climadviceUserCheck->action_text = $climadviceCheck->button_send_text . ' ' . $request->question_answer;
+        }
+        else{
+            $climadviceUserCheck->action_text = $climadviceCheck->action;
         }
         //check if user is signed in
         if(auth()->user() != null){

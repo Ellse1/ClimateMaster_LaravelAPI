@@ -50,6 +50,7 @@ Route::post('climadvice/storeClimadvice', 'ClimadviceController@storeClimadvice'
 Route::get('climadvice/getAllClimadvices', 'ClimadviceController@getAllClimadvices');
 Route::post('climadvice/updateClimadvice_ByClimadviceID', 'ClimadviceController@updateClimadvice_ByClimadviceID');
 Route::post('climadvice/destroyClimadvice_ByClimadviceID', 'ClimadviceController@destroyClimadvice_ByClimadviceID');
+Route::post('climadvice/getClimadvices_with_ClimadviceUserChecks_ForPublicProfile_ByUsername', 'ClimadviceController@getClimadvices_with_ClimadviceUserChecks_ForPublicProfile_ByUsername');
 
 //BLOG
 Route::post('blogPost/store', 'BlogPostController@store');
