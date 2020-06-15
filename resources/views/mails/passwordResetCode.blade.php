@@ -6,7 +6,7 @@
             <h5 style="text-align: right;">Klimaschutz jetzt</h5>
             <p class="headline">Passwortreset bei <span style="color:green">Climate</span>Master</p>
             <p>
-            Lieber {{$user->firstname}},<br>
+            Hallo {{$user->firstname}},<br>
             Hast du vor kurzer Zeit versucht dich bei ClimateMaster einzuloggen aber dein Passwort vergessen und willst dieses nun ändern?
             Mit folgendem Link kannst du dein Passwort zurücksetzen.
             </p>

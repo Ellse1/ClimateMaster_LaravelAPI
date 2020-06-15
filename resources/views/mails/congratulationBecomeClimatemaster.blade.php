@@ -6,7 +6,7 @@
             <h5 style="text-align: right;">Klimaschutz jetzt</h5>
             <p class="headline">Herzlichen Glückwunsch zum <span style="color:green">Climate</span>Master</p>
             <p>
-                Lieber {{$user->firstname}},<br>
+                Hallo {{$user->firstname}},<br>
                 Herzlichen Glückwunsch! Du bist jetzt ClimateMaster 2020, das bedeutet, 
                 dass deine Lebensstil nicht mehr Treibhausgase verursacht, 
                 als du auch wieder verhinderst! Damit trägst du ganz konkret und sehr effizient zu konsequentem Klimaschutz bei. 

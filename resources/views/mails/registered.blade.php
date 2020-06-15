@@ -6,7 +6,7 @@
             <h5 style="text-align: right;">Klimaschutz jetzt</h5>
             <p class="headline">Registrierung bei <span style="color:green">Climate</span>Master</p>
             <p>
-            Lieber {{$user->firstname}},<br>
+            Hallo {{$user->firstname}},<br>
             Du hast dich kürzlich bei Climate-master angemeldet. Wir sind sehr froh, dass es Leute 
             wie dich gibt, die sich für Umwelt und Klimaschutz einsetzen!! 
             Für die Aktivierung deines Kontos, folge einfach dem Link:
