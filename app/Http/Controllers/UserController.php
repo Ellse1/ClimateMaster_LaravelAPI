@@ -25,12 +25,12 @@ class UserController extends Controller
     public function addProfilePicture_ByCurrentUser(Request $request){
         
         $validator = Validator::make($request->all(), [
-            'profilePicture' => 'required|image|mimes:jpeg,jpg,png,JPEG,JPG,PNG|max:8000' //max 6MB
+            'profilePicture' => 'required|image|mimes:jpeg,jpg,png,JPEG,JPG,PNG|max:8000' //max 8MB
         ]);
         if($validator->fails()){
             return response()->json([
                 'state' => 'error',
-                'message' => 'Format oder größe stimmen nicht. ' . $validator->errors() . "PHPINFO: " . phpinfo()
+                'message' => 'Format oder größe stimmen nicht. ' . $validator->errors()
             ]);
         }
 
