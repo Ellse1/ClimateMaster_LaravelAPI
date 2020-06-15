@@ -46,11 +46,9 @@ Route::post('user/checkShowGratulationBecomingClimateMaster_ByCurrentUser', 'Use
 Route::post('user/getDataToShowPublicUserProfile_ByUsername', 'UserController@getDataToShowPublicUserProfile_ByUsername');
 
 //CLIMADVICE
-Route::post('climadvice/storeClimadvice', 'ClimadviceController@storeClimadvice');
 Route::get('climadvice/getAllClimadvices', 'ClimadviceController@getAllClimadvices');
-Route::post('climadvice/updateClimadvice_ByClimadviceID', 'ClimadviceController@updateClimadvice_ByClimadviceID');
-Route::post('climadvice/destroyClimadvice_ByClimadviceID', 'ClimadviceController@destroyClimadvice_ByClimadviceID');
 Route::post('climadvice/getClimadvices_with_ClimadviceUserChecks_ForPublicProfile_ByUsername', 'ClimadviceController@getClimadvices_with_ClimadviceUserChecks_ForPublicProfile_ByUsername');
+Route::post('climadvice/getClimadvices_with_ClimadviceUserChecks_ByCurrentUser', 'ClimadviceController@getClimadvices_with_ClimadviceUserChecks_ByCurrentUser');
 
 //BLOG
 Route::post('blogPost/store', 'BlogPostController@store');
@@ -81,6 +79,9 @@ Route::get('companyslideshowimage/getSlideshowimages_ByCompanyID', 'CompanySlide
 Route::post('companyslideshowimage/destroySlideshowimage_BySlideshowimageID', 'CompanySlideshowimageController@destroySlideshowimage_BySlideshowimageID');
 
 //ADMIN FUNCTIONALITY
+Route::post('admin/storeClimadvice', 'AdminController@storeClimadvice');
+Route::post('admin/updateClimadvice_ByClimadviceID', 'AdminController@updateClimadvice_ByClimadviceID');
+Route::post('admin/destroyClimadvice_ByClimadviceID', 'AdminController@destroyClimadvice_ByClimadviceID');
 Route::post('admin/getCompaniesToActivate', 'AdminController@getCompaniesToActivate');
 Route::post('admin/activateCompany_ByCompanyID', 'AdminController@activateCompany_ByCompanyID');
 Route::post('admin/deactivateCompany_ByCompanyID', 'AdminController@deactivateCompany_ByCompanyID');

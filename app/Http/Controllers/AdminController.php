@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Climadvice;
 use App\ClimadviceCheck;
 use App\Climatemaster;
 use App\Company;
 use App\Http\Resources\ClimadviceCheckResource;
+use App\Http\Resources\ClimadviceResource;
 use App\Http\Resources\CO2CalculationResource;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\PageLogResource;
@@ -17,6 +19,7 @@ use App\Picture_for_imagecreator;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -29,6 +32,150 @@ class AdminController extends Controller
     {
         $this->middleware('auth.role:admin');
     }
+
+
+    /**
+     * Store a newly created Climadvice in storage.
+     */
+    public function storeClimadvice(Request $request)
+    {
+        //Check if user is logged in
+        if(Auth::check() == false){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Du bist nicht eingeloggt'
+            ]);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:climadvices,name',
+            'title' => 'required|unique:climadvices,title',
+            'shortDescription' => 'required|unique:climadvices,shortDescription|max:200',
+            'iconName' => 'required',
+            'easy' => 'required',
+            'climateMasterArea' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => $validator->errors()
+            ]);
+        }
+
+        
+        $climadvice = Climadvice::create([
+            'name' => $request->name,
+            'title' => $request->title,
+            'shortDescription' => $request->shortDescription,
+            'iconName' => $request->iconName,
+            'easy' => (int)$request->easy,
+            'climateMasterArea' => $request->climateMasterArea
+        ]);
+
+        return (new ClimadviceResource($climadvice))
+            ->additional([
+                'state' => 'success',
+                'message' => 'Climadvice erfolgreich erstellt'
+            ]);
+
+    }
+
+
+    /**
+     * Update the specified Climadvice in storage.
+     */
+    public function updateClimadvice_ByClimadviceID(Request $request)
+    {
+        //Check if user is logged in
+        if(Auth::check() == false){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Du bist nicht eingeloggt'
+            ]);
+        }
+
+        //validate
+        $validator = Validator::make($request->all(), [
+            'id' => "required",
+            'name' => "required",
+            'title' => "required",
+            'shortDescription' => "required",
+            'iconName' => "required",
+            'easy' => "required",
+            'climateMasterArea' => "required"
+        ]);
+
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => $validator->errors()
+            ]);
+        }
+
+        $climadvice = Climadvice::find($request->id);
+        $climadvice->title = $request->title;
+        $climadvice->shortDescription = $request->shortDescription;
+        $climadvice->iconName = $request->iconName;
+        $climadvice->easy = (int)$request->easy;
+        $climadvice->climateMasterArea = $request->climateMasterArea;
+        $climadvice->save();
+
+        return (new ClimadviceResource($climadvice))
+            ->additional([
+                'state' => 'success',
+                'message' => 'Climadvice erfolgreich geändert'
+            ]);
+
+    }
+
+
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyClimadvice_ByClimadviceID(Request $request)
+    {
+        if(Auth::check() == false){
+            return response()->json([
+                'state' => 'error',
+                'message' => 'Du bist nicht eingeloggt'
+            ]);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'state' => 'error',
+                'message' => $validator->errors()
+            ]);
+        }
+
+        //Remove Image
+        $climadvice = Climadvice::find($request->id);
+
+        $deleted =  $climadvice->forceDelete();
+
+        return response()->json([
+            'state' => 'success',
+            'message' => 'Climadvice erfolgreich gelöscht'
+        ]);
+    }
+
+
+
+
+
+
+
+
+
 
     /*To activate a company*/
     public function getCompaniesToActivate(){
