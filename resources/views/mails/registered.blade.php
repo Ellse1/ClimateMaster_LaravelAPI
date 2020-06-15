@@ -5,17 +5,21 @@
             <span style="font-size:30px;"><span style="color:green;">Climate</span>Master</span>
             <h5 style="text-align: right;">Klimaschutz jetzt</h5>
             <p class="headline">Registrierung bei <span style="color:green">Climate</span>Master</p>
-            <p>
-            Hallo {{$user->firstname}},<br>
-            Du hast dich kürzlich bei Climate-master angemeldet. Wir sind sehr froh, dass es Leute 
-            wie dich gibt, die sich für Umwelt und Klimaschutz einsetzen!! 
-            Für die Aktivierung deines Kontos, folge einfach dem Link:
-            </p>
-            <p style="text-align: center;margin:auto;margin-top:20px;margin-bottom:20px;">
-                <a style="text-align:center;margin:auto;border-color:green;border-radius:10px;border-style:solid;padding:10px;" href="https://www.climate-master.com/account/verification?userID={{$user->id}}&verificationCode={{$verificationCode}}">Klimaschutzkonto Aktivieren</a>
-            </p>
+            <div style="padding:10px;">
+                <p>
+                Hallo {{$user->firstname}},<br>
+                Du hast dich kürzlich bei Climate-master angemeldet. Wir sind sehr froh, dass es Leute 
+                wie dich gibt, die sich für Umwelt und Klimaschutz einsetzen!! 
+                Für die Aktivierung deines Kontos, folge einfach dem Link:
+                </p>
+                <p style="text-align: center;margin:auto;margin-top:20px;margin-bottom:20px;">
+                    <a style="text-align:center;margin:auto;border-color:green;border-radius:10px;border-style:solid;padding:10px;" href="https://www.climate-master.com/account/verification?userID={{$user->id}}&verificationCode={{$verificationCode}}">Klimaschutzkonto Aktivieren</a>
+                </p>
 
-            <p style="text-align: center;">Vielen Dank für die Aktivierung deines ClimateMaster Kontos.</p>
+                <p style="text-align: center;">Vielen Dank für die Aktivierung deines ClimateMaster Kontos.</p>
+
+            </div>
+
         </div>
     </div>
 <style>

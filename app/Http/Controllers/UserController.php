@@ -25,7 +25,7 @@ class UserController extends Controller
     public function addProfilePicture_ByCurrentUser(Request $request){
         
         $validator = Validator::make($request->all(), [
-            'profilePicture' => 'required|image|mimes:jpeg,jpg,png|max:2048'
+            'profilePicture' => 'required|image|mimes:jpeg,jpg,png,JPEG,JPG,PNG|max:6144' //max 6MB
         ]);
         if($validator->fails()){
             return response()->json([
