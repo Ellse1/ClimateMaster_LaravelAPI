@@ -288,8 +288,6 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'climadvice_id' => 'required|integer|exists:climadvices,id',
             'action' => 'required',
-            'question' => 'required',
-            'answer_proposal' => 'required',
             'button_send_text' => 'required'
         ]);
 
