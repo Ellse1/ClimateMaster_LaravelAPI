@@ -30,7 +30,7 @@ class UserController extends Controller
         if($validator->fails()){
             return response()->json([
                 'state' => 'error',
-                'message' => 'Format oder größe stimmen nicht. ' . $validator->errors() . "Filesize: " .ini_get("upload_max_filesize") . ' Post_max_size: ' . ini_get('post_max_size')
+                'message' => 'Format oder größe stimmen nicht. ' . $validator->errors() . "PHPINFO: " . phpinfo()
             ]);
         }
 
