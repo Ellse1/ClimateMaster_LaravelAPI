@@ -21,7 +21,7 @@ class ClimadviceController extends Controller
     //Constructor:
     public function __construct()
     {
-        $this->middleware('auth.role:user', ['except' => ['getAllClimadvices', 'getClimadvices_with_ClimadviceUserChecks_ForPublicProfile_ByUsername']]);
+        $this->middleware('auth.role:user,admin', ['except' => ['getAllClimadvices', 'getClimadvices_with_ClimadviceUserChecks_ForPublicProfile_ByUsername']]);
     }
 
 

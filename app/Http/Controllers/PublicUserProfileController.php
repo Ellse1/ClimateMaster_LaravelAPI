@@ -38,27 +38,25 @@ class PublicUserProfileController extends Controller
                 $query->where('public', true);
             })
             ->orderBy('created_at')
-            ->get();    
-        //first the climatemasters, than the people not beegin climatemasters
-        // $notClimateMasterUsers = User::where('profile_picture_name', '!=', null)
-        //     ->whereHas('climatemasters', function (Builder $query) {
-        //         $query->where('verified', false);
-        //     })
-        //     ->whereHas('public_user_profile', function (Builder $query) {
-        //         $query->where('public', true);
-        //     })
-        //     ->orderBy('created_at')
-        //     ->get();  
-        $notClimateMasterUsers = User::where('profile_picture_name', '!=', null)
-        ->whereHas('climatemasters', function (Builder $query) {
-            $query->where('verified', false);
-        })        
-        ->orWhereHas('climadvice_user_checks', function (Builder $qu){
-            $qu->where('active', true);
+            ->get(); 
+
+        //than the people not beeing climatemasters
+        //but having (co2calculation and public_user_profile with public ) or (climadvice_user_checks with active and public_user_profile with public and public_climadvice_checks)
+        //having a profile picture is allways necessary
+        $notClimateMasterUsers = User::
+        where(function ($userQuery){
+            $userQuery->whereHas('climadvice_user_checks', function (Builder $qu){  //co2calculation and public_user_profile with public 
+                $qu->where('active', true);
+            })->whereHas('public_user_profile', function (Builder $query) {         //(climadvice_user_checks with active and public_user_profile with public and public_climadvice_checks)
+                $query->where('public', true)->where('public_climadvice_checks', true);
+            });
+        })->orWhere(function ($userQue){
+            $userQue->whereHas('climatemasters', function (Builder $query) {        
+                $query->where('verified', false)                                 
+                    ->has('co2calculations');                                   
+                });
         })
-        ->whereHas('public_user_profile', function (Builder $query) {
-            $query->where('public', true);
-        })
+        ->where('profile_picture_name', '!=', null)       
         ->orderBy('created_at')
         ->get();     
             
