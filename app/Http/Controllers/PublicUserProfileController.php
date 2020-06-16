@@ -29,7 +29,7 @@ class PublicUserProfileController extends Controller
 
         // Get all public profiles
         // $publicUserProfiles = PublicUserProfile::where('public', true)->with('user')->get();
-
+        //first the ClimateMasters
         $climateMasterUsers = User::where('profile_picture_name', '!=', null)
             ->whereHas('climatemasters', function (Builder $query) {
                 $query->where('verified', true);
@@ -39,16 +39,30 @@ class PublicUserProfileController extends Controller
             })
             ->orderBy('created_at')
             ->get();    
-                
+        //first the climatemasters, than the people not beegin climatemasters
+        // $notClimateMasterUsers = User::where('profile_picture_name', '!=', null)
+        //     ->whereHas('climatemasters', function (Builder $query) {
+        //         $query->where('verified', false);
+        //     })
+        //     ->whereHas('public_user_profile', function (Builder $query) {
+        //         $query->where('public', true);
+        //     })
+        //     ->orderBy('created_at')
+        //     ->get();  
         $notClimateMasterUsers = User::where('profile_picture_name', '!=', null)
-            ->whereHas('climatemasters', function (Builder $query) {
-                $query->where('verified', false);
-            })
-            ->whereHas('public_user_profile', function (Builder $query) {
-                $query->where('public', true);
-            })
-            ->orderBy('created_at')
-            ->get();    
+        ->whereHas('climatemasters', function (Builder $query) {
+            $query->where('verified', false);
+        })        
+        ->orWhereHas('climadvice_user_checks', function (Builder $qu){
+            $qu->where('active', true);
+        })
+        ->whereHas('public_user_profile', function (Builder $query) {
+            $query->where('public', true);
+        })
+        ->orderBy('created_at')
+        ->get();     
+            
+
         
         $usersToReturn = $climateMasterUsers->merge($notClimateMasterUsers);
                 
