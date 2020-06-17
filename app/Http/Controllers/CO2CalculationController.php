@@ -107,7 +107,7 @@ class CO2CalculationController extends Controller
         //check if a co2calculation of the current year has a compensation -> take this to current co2 calculation ->don't loose co2compensations
         else{
             $co2CalculationsOfCurrentYearWithCompensation = $climatemaster->co2calculations()->where('compensation', '!=', null)->latest();;
-            if($co2CalculationsOfCurrentYearWithCompensation != null){
+            if($co2CalculationsOfCurrentYearWithCompensation->first() != null){
                 $co2Calculation->compensation = $co2CalculationsOfCurrentYearWithCompensation->first()->compensation;
             }
         }
