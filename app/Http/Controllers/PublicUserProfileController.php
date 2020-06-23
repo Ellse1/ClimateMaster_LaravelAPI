@@ -54,6 +54,8 @@ class PublicUserProfileController extends Controller
             $userQue->whereHas('climatemasters', function (Builder $query) {        
                 $query->where('verified', false)                                 
                     ->has('co2calculations');                                   
+                })->whereHas('public_user_profile', function (Builder $query) {         
+                    $query->where('public', true);
                 });
         })
         ->where('profile_picture_name', '!=', null)       
