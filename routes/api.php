@@ -137,3 +137,10 @@ Route::post('climadviceCheck/getAllClimadviceChecks', 'ClimadviceCheckController
 Route::post('climadviceUserCheck/store', 'ClimadviceUserCheckController@store');
 Route::post('climadviceUserCheck/getClimadviceUserChecks_ByCurrentUser', 'ClimadviceUserCheckController@getClimadviceUserChecks_ByCurrentUser');
 Route::post('climadviceUserCheck/deactivateAllOfClimadviceCheck_ByCurrentUser', 'ClimadviceUserCheckController@deactivateAllOfClimadviceCheck_ByCurrentUser');
+
+//Project
+Route::post('project/store', 'ProjectController@store');
+Route::post('project/getAll', 'ProjectController@getAll');
+Route::post('project/get_ByID', 'ProjectController@get_ByID');
+Route::post('project/get_ByName', 'ProjectController@get_ByName');
+Route::post('project/edit_ByID', 'ProjectController@edit_ByID');
