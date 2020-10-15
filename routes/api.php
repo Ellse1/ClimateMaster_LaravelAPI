@@ -144,3 +144,6 @@ Route::post('project/getAll', 'ProjectController@getAll');
 Route::post('project/get_ByID', 'ProjectController@get_ByID');
 Route::post('project/get_ByName', 'ProjectController@get_ByName');
 Route::post('project/edit_ByID', 'ProjectController@edit_ByID');
+
+//Email_message
+Route::post('emailMessage/store', 'EmailMessageController@store');
