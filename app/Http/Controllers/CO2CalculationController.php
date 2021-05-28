@@ -201,7 +201,7 @@ class CO2CalculationController extends Controller
             ]);             
         }
 
-        $climatemaster = $user->climatemasters()->where('year', Carbon::now()->year)->first();
+        $climatemaster = $user->climatemasters()->first();
 
         if($climatemaster == null){
             return response()->json([
